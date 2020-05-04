@@ -4,30 +4,41 @@
 #include <algorithm>
 #include <random>
 #include <QDebug>
+#include <QQmlEngine>
 
-GameBoard::GameBoard(const GameBoard::BoardDimension_t boardDimension, QObject *parent)
+GameBoard::GameBoard(const GameBoard::BoardDimension boardDimension, QObject *parent)
   : QAbstractListModel { parent }, m_playerMove { PlayerMove::FirstPlayerMove }
 {
   boardInit(boardDimension);
 }
 
-void GameBoard::boardInit(const GameBoard::BoardDimension_t boardDimension)
+void GameBoard::boardInit(const GameBoard::BoardDimension boardDimension)
 {
   m_dimension = boardDimension;
   m_boardSize = m_dimension * m_dimension;
   m_rawBoard.clear();
   m_rawBoard.resize(m_boardSize);
-  static auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+  auto seed = std::chrono::system_clock::now().time_since_epoch().count();
   std::default_random_engine random(seed);
+  std::cout << "boardInit: " << m_boardSize << " - ";
   for (auto& tile : m_rawBoard) {
     tile.value = random() % 19 - 9;
+    std::cout << tile.value << ", ";
     tile.active = false;
     tile.removed = false;
   }
+  std::cout << std::endl;
   setActiveCol(boardDimension / 2);
   gameState.scoreA = 0;
   gameState.scoreB = 0;
   gameState.endGame = false;
+  m_playerMove = PlayerMove::FirstPlayerMove;
+  emit dataChanged(createIndex(0, 0), createIndex(m_boardSize, 0));
+}
+
+void GameBoard::declareQML() {
+  qmlRegisterType<GameBoard>("Game", 1, 0, "GameBoardModel");
+  //qmlRegisterType<BoardDimension>("BoardDimension", 1, 0, "BoardDimension");
 }
 
 QHash<int, QByteArray> GameBoard::roleNames() const
@@ -42,17 +53,21 @@ QHash<int, QByteArray> GameBoard::roleNames() const
 int GameBoard::rowCount(const QModelIndex &parent) const
 {
   Q_UNUSED(parent);
+  qDebug() << "rowCount:" << m_rawBoard.size();
   return m_rawBoard.size();
 }
 
 QVariant GameBoard::data(const QModelIndex &index, int role) const
 {
+  qDebug() << "data";
   const int rowIndex { index.row() };
   if (not isPositionValid(rowIndex)) {
+    qDebug() << "data {}";
     return {};
   }
 
   if (not index.isValid() or index.row() > rowCount(index)) {
+    qDebug() << "data {}";
     return {};
   }
 
@@ -67,8 +82,10 @@ QVariant GameBoard::data(const QModelIndex &index, int role) const
     case BoardRoles::IsActiveRole: {
       return QVariant::fromValue(tile.active);
     }
-    default:
+    default: {
+      qDebug() << "data {}";
       return {};
+    }
   }
 }
 
@@ -101,7 +118,6 @@ bool GameBoard::move(int index)
     }
 
     m_rawBoard.at(index).removed = true;
-
 
     m_playerMove = (m_playerMove == PlayerMove::FirstPlayerMove
                       ? PlayerMove::SecondPlayerMove

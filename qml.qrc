@@ -4,5 +4,7 @@
         <file>GameBoard.qml</file>
         <file>Tile.qml</file>
         <file>Score.qml</file>
+        <file>GameMenu.qml</file>
+        <file>MenuButton.qml</file>
     </qresource>
 </RCC>

@@ -5,24 +5,27 @@
 
 class GameBoard : public QAbstractListModel
 {
-  typedef enum BoardDimension {
-    Dimension4x4 = 4,
-    Dimension5x5 = 5,
-    Dimension7x7 = 7,
-    Dimension9x9 = 9,
-    } BoardDimension_t;
-
   Q_OBJECT
   Q_PROPERTY(int dimension READ dimension CONSTANT);
   Q_PROPERTY(int scoreA READ scoreA CONSTANT);
   Q_PROPERTY(int scoreB READ scoreB CONSTANT);
   Q_PROPERTY(bool isEndGame READ isEndGame CONSTANT);
 public:
-  static constexpr BoardDimension_t defaultBoardDimension { Dimension4x4 };
-  GameBoard(const BoardDimension_t boardDimension = defaultBoardDimension,
+  enum BoardDimension {
+    Dimension4x4 = 4,
+    Dimension5x5 = 5,
+    Dimension7x7 = 7,
+    Dimension9x9 = 9,
+    };
+  Q_ENUMS(BoardDimension)
+
+  static constexpr BoardDimension defaultBoardDimension { Dimension4x4 };
+  GameBoard(const BoardDimension boardDimension = defaultBoardDimension,
     QObject* parent = nullptr);
 
-  void boardInit(BoardDimension_t);
+  Q_INVOKABLE void boardInit(BoardDimension);
+
+  static void declareQML();
 
   struct Tile {
     int value {};
