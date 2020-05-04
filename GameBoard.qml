@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.5
-import Game 1.0;
+import GameBoardModel 1.0;
 
 Item {
     id: root
