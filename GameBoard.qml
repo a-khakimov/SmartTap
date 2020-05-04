@@ -1,46 +1,58 @@
 import QtQuick 2.0
 import Game 1.0;
 
-GridView {
+Rectangle {
     id: root
-    model: GameBoardModel { }
+    color: "#F1F1F1"
 
-    cellWidth: width / root.model.dimension
-    cellHeight: height / root.model.dimension
+    GridView {
+        id: _gameBoard
+        model: GameBoardModel { }
 
-    delegate: Item {
-        id: _backgroundDelegate
-        width: root.cellWidth
-        height: root.cellHeight
+        anchors.fill: parent
+        cellWidth: root.width / _gameBoard.model.dimension
+        cellHeight: root.height / _gameBoard.model.dimension
 
-        Tile {
-            displayText: display.toString()
-            anchors.fill: _backgroundDelegate
-            anchors.margins: 5
+        delegate: Item {
+            id: _backgroundDelegate
+            width: _gameBoard.cellWidth
+            height: _gameBoard.cellHeight
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    if (root.model.remove(index))     {
-                        parent.visible = false
-                        _scoreA.text = root.model.scoreA()
-                        _scoreB.text = root.model.scoreB()
+            Tile {
+                displayText: value
+                anchors.fill: _backgroundDelegate
+                anchors.margins: 5
+                color: isActive ? "ivory" : "beige"
+
+                // TODO: animate it
+                visible: !isRemoved
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        _gameBoard.model.move(index)
+                        _scoreA.score = _gameBoard.model.scoreA
+                        _scoreB.score = _gameBoard.model.scoreB
+                        if (_gameBoard.model.isEndGame) {
+                            _gameBoard.visible = false
+                        }
                     }
                 }
             }
         }
     }
-
-    Text {
+    Score {
         id: _scoreA
-        text: root.model.scoreA()
-        anchors.top: root.bottom
-        anchors.left: root.left
+        score: _gameBoard.model.scoreA
+        anchors.bottom: _gameBoard.top
+        anchors.left: _gameBoard.left
+        font.pointSize: _gameBoard.width / 20
     }
-    Text {
+    Score {
         id: _scoreB
-        text: root.model.scoreB()
-        anchors.top: root.bottom
-        anchors.right: root.right
+        score: _gameBoard.model.scoreB
+        anchors.bottom: _gameBoard.top
+        anchors.right: _gameBoard.right
+        font.pointSize: _gameBoard.width / 20
     }
 }

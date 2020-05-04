@@ -15,10 +15,6 @@ Window {
             anchors.verticalCenter: parent.verticalCenter
             width: parent.width
             height: width
-
         }
-
     }
-
-
 }
