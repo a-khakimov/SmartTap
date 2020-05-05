@@ -4,8 +4,7 @@
 #include <QDebug>
 #include <QQmlEngine>
 
-GameBoardModel::GameBoardModel(const GameBoardModel::BoardDimension boardDimension,
-                     QObject *parent)
+GameBoardModel::GameBoardModel(const GameBoardModel::BoardDimension boardDimension, QObject *parent)
   : QAbstractListModel { parent }
 {
   boardInit(boardDimension);
@@ -13,7 +12,7 @@ GameBoardModel::GameBoardModel(const GameBoardModel::BoardDimension boardDimensi
 
 void GameBoardModel::boardInit(const GameBoardModel::BoardDimension dimension)
 {
-  gameLogic.init(dimension);
+  gameLogic.reload(dimension);
   size_t boardSize = gameLogic.getBoardSize();
   std::cout << boardSize << std::endl;
   emit dataChanged(createIndex(0, 0), createIndex(gameLogic.getBoardSize(), 0));
@@ -41,11 +40,6 @@ int GameBoardModel::rowCount(const QModelIndex &parent) const
 
 QVariant GameBoardModel::data(const QModelIndex &index, int role) const
 {
-  std::cout << gameLogic.getBoardInited() << std::endl;
-  while (not gameLogic.getBoardInited()) {
-
-  }
-
   const int rowIndex { index.row() };
   if (not gameLogic.isPositionValid(rowIndex)) {
     return {};
@@ -55,10 +49,7 @@ QVariant GameBoardModel::data(const QModelIndex &index, int role) const
     return {};
   }
 
-  const Tile& tile = gameLogic.getBoard().at(index.row());/*
-  std::cout << "Tile >  value=" << tile.value
-                   << " active=" << tile.active
-                   << " removed=" << tile.removed << std::endl;*/
+  const Tile& tile = gameLogic.getBoard().at(index.row());
   switch (role) {
     case BoardRoles::ValueRole: {
       return QVariant::fromValue(tile.value);

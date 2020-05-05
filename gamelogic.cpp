@@ -5,23 +5,14 @@
 #include <chrono>
 #include <iostream>
 
-GameLogic::GameLogic() : m_dimension(0), m_boardSize(0)
+GameLogic::GameLogic()
 {
-  // static constexpr size_t defaultBoardDimension = 5;
-  //init(defaultBoardDimension);
+  static constexpr size_t defaultBoardDimension = 5;
+  reload(defaultBoardDimension);
 }
 
-void GameLogic::init(const int dimension)
+void GameLogic::reload(const int dimension)
 {
-  if (dimension > 10) {
-    std::cerr << "GameLogic::init() wrong dimension" << std::endl;
-  }
-  m_boardInited = false;
-  //m_board.clear();
-  m_board.resize(m_boardSize);
-  m_gameState.firstPlayerScore = 0;
-  m_gameState.secondPlayerScore = 0;
-  m_gameState.endGame = false;
   m_dimension = dimension;
   m_boardSize = m_dimension * m_dimension;
   m_board.clear();
@@ -30,19 +21,21 @@ void GameLogic::init(const int dimension)
   auto seed = std::chrono::system_clock::now().time_since_epoch().count();
   std::default_random_engine random(seed);
   for (auto& tile : m_board) {
-    tile.value = random() % 19 - 9; /* from -9 to 9 range */
+    tile.value = (random() % 19) - 9; /* from -9 to 9 range */
     tile.active = false;
     tile.removed = false;
   }
   setActiveCol(dimension / 2);
 
+  m_gameState.firstPlayerScore = 0;
+  m_gameState.secondPlayerScore = 0;
+  m_gameState.endGame = false;
   m_playerMove = PlayerMove::FirstPlayerMove;
-  m_boardInited = true;
 }
 
 bool GameLogic::isPositionValid(const size_t pos) const
 {
-  return pos < m_boardSize;
+  return (pos < m_boardSize);
 }
 
 const std::vector<Tile>& GameLogic::getBoard() const
@@ -77,15 +70,13 @@ size_t GameLogic::getBoardSize() const
 
 bool GameLogic::move(const int index)
 {
-  std::cout << index << std::endl;
   if (not isPositionValid(index)) {
-    //qDebug() << "Position is not Valid " << index;
+    std::cerr << "Position is not Valid: " << index << std::endl;
     return false;
   }
   const auto [curRow, curCol] = getRowCol(index);
 
   if (m_gameState.endGame) {
-    //qDebug() << "End game";
     return false;
   }
   if (m_board.at(index).active and not m_board.at(index).removed) {
@@ -103,12 +94,21 @@ bool GameLogic::move(const int index)
                       ? PlayerMove::SecondPlayerMove
                       : PlayerMove::FirstPlayerMove);
 
-    if (not checkTilesInRow(curRow) and m_playerMove == PlayerMove::SecondPlayerMove) {
-      m_gameState.endGame = true;
-    }
-
-    if (not checkTilesInCol(curCol) and m_playerMove == PlayerMove::FirstPlayerMove) {
-      m_gameState.endGame = true;
+    switch (m_playerMove) {
+      case PlayerMove::FirstPlayerMove: {
+        if (not checkTilesInCol(curCol)) {
+          m_gameState.endGame = true;
+        }
+        break;
+      }
+      case PlayerMove::SecondPlayerMove: {
+        if (not checkTilesInRow(curRow)) {
+          m_gameState.endGame = true;
+        }
+        break;
+      }
+      default:
+        break;
     }
   }
   return true;
@@ -170,13 +170,7 @@ bool GameLogic::checkTilesInCol(size_t curCol) const
   return tileNotRemoved;
 }
 
-bool GameLogic::getBoardInited() const
-{
-  return m_boardInited;
-}
-
 GameLogic::~GameLogic()
 {
 
 }
-

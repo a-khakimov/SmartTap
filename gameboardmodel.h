@@ -16,6 +16,7 @@ public:
 
   enum BoardDimension {
     Dimension2x2 = 2,
+    Dimension3x3 = 3,
     Dimension4x4 = 4,
     Dimension5x5 = 5,
     Dimension7x7 = 7,
@@ -23,22 +24,22 @@ public:
     };
   Q_ENUMS(BoardDimension)
 
-  static constexpr BoardDimension defaultBoardDimension { Dimension2x2 };
+  static constexpr BoardDimension defaultBoardDimension { Dimension3x3 };
   GameBoardModel(const BoardDimension boardDimension = defaultBoardDimension,
     QObject* parent = nullptr);
 
-  QHash<int, QByteArray> roleNames       () const override;
-  int                    rowCount        (const QModelIndex &parent = QModelIndex()) const override;
-  QVariant               data            (const QModelIndex& index, int role = Qt::DisplayRole) const override;
+  QHash<int, QByteArray> roleNames  () const override;
+  int                    rowCount   (const QModelIndex &parent = QModelIndex()) const override;
+  QVariant               data       (const QModelIndex& index, int role = Qt::DisplayRole) const override;
 
-  Q_INVOKABLE void       boardInit       (BoardDimension);
-  Q_INVOKABLE bool       move            (int index);
-  size_t                 dimension       () const;
-  size_t                 boardSize       () const;
-  int                    scoreA          () const;
-  int                    scoreB          () const;
-  bool                   isEndGame       () const;
-  static void            declareQML();
+  Q_INVOKABLE void       boardInit  (BoardDimension);
+  Q_INVOKABLE bool       move       (int index);
+  size_t                 dimension  () const;
+  size_t                 boardSize  () const;
+  int                    scoreA     () const;
+  int                    scoreB     () const;
+  bool                   isEndGame  () const;
+  static void            declareQML ();
 
 private:
 
