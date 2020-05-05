@@ -1,5 +1,6 @@
 import QtQuick 2.14
 import QtQuick.Window 2.14
+import GameBoardModel 1.0;
 
 Window {
     visible: true
@@ -11,6 +12,7 @@ Window {
 
     Rectangle {
         anchors.fill: parent
+
         GameBoard {
             id: _gameBoard
             visible: false
@@ -18,7 +20,6 @@ Window {
             anchors.verticalCenter: parent.verticalCenter
             width: parent.width
             height: width
-
             onBack: {
                 _gameBoard.visible = false
                 _gameMenu.visible = true
@@ -28,17 +29,21 @@ Window {
         GameMenu {
             id: _gameMenu
             onStartX1: {
-                // TODO: AI
+                _gameBoard.gameMode = GameBoardModel.Ai
+                _gameBoard.visible = true
+                _gameMenu.visible = false
             }
             onStartX2: {
+                _gameBoard.gameMode = GameBoardModel.X2
                 _gameBoard.visible = true
                 _gameMenu.visible = false
             }
             onStartMultiplayer: {
+                _gameBoard.gameMode = GameBoardModel.Multiplayer
                 // TODO: Multiplayer
             }
             onChangeBoardSize: {
-
+                // TODO: Resizing board
             }
         }
     }

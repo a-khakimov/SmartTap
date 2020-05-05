@@ -68,20 +68,24 @@ QVariant GameBoardModel::data(const QModelIndex &index, int role) const
 
 #include "ai.h"
 
-bool GameBoardModel::move(int index)
+bool GameBoardModel::move(int index, const int mode)
 {
-  if (not gameLogic.move(index)) {
-    return false;
-  }
-  emit dataChanged(createIndex(0, 0), createIndex(gameLogic.getBoardSize(), 0));
-
-  Ai ai;
-  const int ai_move_index = ai.move(gameLogic.getBoard());
-  if (not gameLogic.move(ai_move_index)) {
-    return false;
+  if (mode == GameMode::X2) {
+    if (not gameLogic.move(index)) { return false; }
+    emit dataChanged(createIndex(0, 0), createIndex(gameLogic.getBoardSize(), 0));
   }
 
-  emit dataChanged(createIndex(0, 0), createIndex(gameLogic.getBoardSize(), 0));
+  if (mode == GameMode::Ai) {
+    if (not gameLogic.move(index)) { return false; }
+    emit dataChanged(createIndex(0, 0), createIndex(gameLogic.getBoardSize(), 0));
+    smarttap::Ai ai;
+    const int ai_move_index = ai.move(gameLogic.getBoard());
+    if (not gameLogic.move(ai_move_index)) { return false;  }
+    emit dataChanged(createIndex(0, 0), createIndex(gameLogic.getBoardSize(), 0));
+  }
+
+  if (mode == GameMode::Multiplayer) { /* TODO: multplayer mode */ }
+
   return true;
 }
 

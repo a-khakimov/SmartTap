@@ -5,6 +5,9 @@
 #include <random>
 #include <algorithm>
 
+namespace smarttap {
+
+
 Ai::Ai()
 {
 
@@ -29,5 +32,7 @@ int Ai::move(const std::vector<Tile> &board)
 
 Ai::~Ai()
 {
+
+}
 
 }

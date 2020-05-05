@@ -24,6 +24,14 @@ public:
     };
   Q_ENUMS(BoardDimension)
 
+  enum GameMode {
+    None = 0,
+    Ai,
+    X2,
+    Multiplayer
+  };
+  Q_ENUMS(GameMode)
+
   static constexpr BoardDimension defaultBoardDimension { Dimension5x5 };
   GameBoardModel(const BoardDimension boardDimension = defaultBoardDimension,
     QObject* parent = nullptr);
@@ -33,7 +41,7 @@ public:
   QVariant               data       (const QModelIndex& index, int role = Qt::DisplayRole) const override;
 
   Q_INVOKABLE void       boardInit  (BoardDimension);
-  Q_INVOKABLE bool       move       (int index);
+  Q_INVOKABLE bool       move       (int index, const int mode);
   size_t                 dimension  () const;
   size_t                 boardSize  () const;
   int                    scoreA     () const;

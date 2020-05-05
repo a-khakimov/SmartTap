@@ -4,9 +4,23 @@ import GameBoardModel 1.0;
 
 Item {
     id: root
-
+    property int gameMode: GameBoardModel.X2
     property alias gameBoard: _gameBoard
     signal back()
+
+    function move(index)
+    {
+        _gameBoard.model.move(index, gameMode)
+        _scoreA.score = _gameBoard.model.scoreA
+        _scoreB.score = _gameBoard.model.scoreB
+
+        if (_gameBoard.model.isEndGame) {
+            _gameBoard.visible = false
+            _endGameText.text = "Game over"
+            _endGameText.visible = true
+            _restartButton.visible = true
+        }
+    }
 
     GridView {
         id: _gameBoard
@@ -36,15 +50,7 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        _gameBoard.model.move(index)
-                        _scoreA.score = _gameBoard.model.scoreA
-                        _scoreB.score = _gameBoard.model.scoreB
-                        if (_gameBoard.model.isEndGame) {
-                            _gameBoard.visible = false
-                            _endGameText.text = "Game over"
-                            _endGameText.visible = true
-                            _restartButton.visible = true
-                        }
+                        move(index);
                     }
                 }
             }
@@ -85,7 +91,7 @@ Item {
         anchors.top: _gameBoard.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         onClicked: {
-            _gameBoard.model.boardInit(4)
+            _gameBoard.model.boardInit(5)
             _scoreA.score = 0
             _scoreB.score = 0
             root.back()
