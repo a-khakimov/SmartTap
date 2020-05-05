@@ -69,7 +69,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         onClicked: {
             _gameBoard.visible = true
-            _gameBoard.model.boardInit(4)
+            _gameBoard.model.boardInit(5)
             _restartButton.visible = false
             _endGameText.visible = false
             _scoreA.score = 0

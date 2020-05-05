@@ -66,11 +66,21 @@ QVariant GameBoardModel::data(const QModelIndex &index, int role) const
   }
 }
 
+#include "ai.h"
+
 bool GameBoardModel::move(int index)
 {
   if (not gameLogic.move(index)) {
     return false;
   }
+  emit dataChanged(createIndex(0, 0), createIndex(gameLogic.getBoardSize(), 0));
+
+  Ai ai;
+  const int ai_move_index = ai.move(gameLogic.getBoard());
+  if (not gameLogic.move(ai_move_index)) {
+    return false;
+  }
+
   emit dataChanged(createIndex(0, 0), createIndex(gameLogic.getBoardSize(), 0));
   return true;
 }

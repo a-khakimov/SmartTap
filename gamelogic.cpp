@@ -1,5 +1,5 @@
 #include "gamelogic.h"
-
+#include "ai.h"
 #include <algorithm>
 #include <random>
 #include <chrono>
@@ -79,37 +79,39 @@ bool GameLogic::move(const int index)
   if (m_gameState.endGame) {
     return false;
   }
-  if (m_board.at(index).active and not m_board.at(index).removed) {
-    if (m_playerMove == PlayerMove::FirstPlayerMove) {
-      m_gameState.firstPlayerScore += m_board.at(index).value;
-      setActiveRow(curRow);
-    } else {
-      m_gameState.secondPlayerScore += m_board.at(index).value;
-      setActiveCol(curCol);
-    }
+  if (m_board.at(index).removed or not m_board.at(index).active) {
+    return false;
+  }
 
-    m_board.at(index).removed = true;
+  if (m_playerMove == PlayerMove::FirstPlayerMove) {
+    m_gameState.firstPlayerScore += m_board.at(index).value;
+    setActiveRow(curRow);
+  } else {
+    m_gameState.secondPlayerScore += m_board.at(index).value;
+    setActiveCol(curCol);
+  }
 
-    m_playerMove = (m_playerMove == PlayerMove::FirstPlayerMove
-                      ? PlayerMove::SecondPlayerMove
-                      : PlayerMove::FirstPlayerMove);
+  m_board.at(index).removed = true;
 
-    switch (m_playerMove) {
-      case PlayerMove::FirstPlayerMove: {
-        if (not checkTilesInCol(curCol)) {
-          m_gameState.endGame = true;
-        }
-        break;
+  m_playerMove = (m_playerMove == PlayerMove::FirstPlayerMove
+                    ? PlayerMove::SecondPlayerMove
+                    : PlayerMove::FirstPlayerMove);
+
+  switch (m_playerMove) {
+    case PlayerMove::FirstPlayerMove: {
+      if (not checkTilesInCol(curCol)) {
+        m_gameState.endGame = true;
       }
-      case PlayerMove::SecondPlayerMove: {
-        if (not checkTilesInRow(curRow)) {
-          m_gameState.endGame = true;
-        }
-        break;
-      }
-      default:
-        break;
+      break;
     }
+    case PlayerMove::SecondPlayerMove: {
+      if (not checkTilesInRow(curRow)) {
+        m_gameState.endGame = true;
+      }
+      break;
+    }
+    default:
+      break;
   }
   return true;
 }

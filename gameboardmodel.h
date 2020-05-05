@@ -24,7 +24,7 @@ public:
     };
   Q_ENUMS(BoardDimension)
 
-  static constexpr BoardDimension defaultBoardDimension { Dimension3x3 };
+  static constexpr BoardDimension defaultBoardDimension { Dimension5x5 };
   GameBoardModel(const BoardDimension boardDimension = defaultBoardDimension,
     QObject* parent = nullptr);
 
