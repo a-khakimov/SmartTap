@@ -5,12 +5,34 @@ import GameBoardModel 1.0;
 Item {
     id: root
     property int gameMode: GameBoardModel.X2
+    property bool _aiCompleteMove: true
     property alias gameBoard: _gameBoard
     signal back()
 
+    Timer {
+        id: _aiMoveTimer
+        interval: 1000;
+        running: false;
+        repeat: false
+        onTriggered: {
+            _gameBoard.model.moveAI()
+            _aiCompleteMove = true
+        }
+    }
+
     function move(index)
     {
-        _gameBoard.model.move(index, gameMode)
+        if (gameMode == GameBoardModel.X2) {
+            _gameBoard.model.moveX2(index)
+        } else if (gameMode == GameBoardModel.Ai) {
+            if (_aiCompleteMove) {
+                if(_gameBoard.model.moveX2(index)) {
+                    _aiMoveTimer.start()
+                    _aiCompleteMove = false
+                }
+            }
+        }
+
         _scoreA.score = _gameBoard.model.scoreA
         _scoreB.score = _gameBoard.model.scoreB
 

@@ -1,5 +1,5 @@
 #include "gameboardmodel.h"
-
+#include "ai.h"
 #include <iostream>
 #include <QDebug>
 #include <QQmlEngine>
@@ -19,6 +19,7 @@ void GameBoardModel::boardInit(const GameBoardModel::BoardDimension dimension)
 }
 
 void GameBoardModel::declareQML()
+
 {
   qmlRegisterType<GameBoardModel>("GameBoardModel", 1, 0, "GameBoardModel");
 }
@@ -66,26 +67,19 @@ QVariant GameBoardModel::data(const QModelIndex &index, int role) const
   }
 }
 
-#include "ai.h"
-
-bool GameBoardModel::move(int index, const int mode)
+bool GameBoardModel::moveAI()
 {
-  if (mode == GameMode::X2) {
-    if (not gameLogic.move(index)) { return false; }
-    emit dataChanged(createIndex(0, 0), createIndex(gameLogic.getBoardSize(), 0));
-  }
+  smarttap::Ai ai;
+  const int ai_move_index = ai.move(gameLogic.getBoard());
+  if (not gameLogic.move(ai_move_index)) { return false;  }
+  emit dataChanged(createIndex(0, 0), createIndex(gameLogic.getBoardSize(), 0));
+  return true;
+}
 
-  if (mode == GameMode::Ai) {
-    if (not gameLogic.move(index)) { return false; }
-    emit dataChanged(createIndex(0, 0), createIndex(gameLogic.getBoardSize(), 0));
-    smarttap::Ai ai;
-    const int ai_move_index = ai.move(gameLogic.getBoard());
-    if (not gameLogic.move(ai_move_index)) { return false;  }
-    emit dataChanged(createIndex(0, 0), createIndex(gameLogic.getBoardSize(), 0));
-  }
-
-  if (mode == GameMode::Multiplayer) { /* TODO: multplayer mode */ }
-
+bool GameBoardModel::moveX2(int index)
+{
+  if (not gameLogic.move(index)) { return false; }
+  emit dataChanged(createIndex(0, 0), createIndex(gameLogic.getBoardSize(), 0));
   return true;
 }
 
