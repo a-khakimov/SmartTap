@@ -13,6 +13,14 @@ Window {
     Rectangle {
         anchors.fill: parent
 
+        ThemeButton {
+            id: _themeButton
+            anchors.horizontalCenter: parent.horizontalCenter
+            y : parent.height / 16
+            height: parent.height / 10
+            width: height
+        }
+
         GameBoard {
             id: _gameBoard
             visible: false

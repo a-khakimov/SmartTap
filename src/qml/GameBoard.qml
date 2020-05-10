@@ -17,6 +17,24 @@ Item {
         onTriggered: {
             _gameBoard.model.moveAI()
             _aiCompleteMove = true
+            root.updateScores()
+            root.checkGameState()
+        }
+    }
+
+    function updateScores()
+    {
+        _scoreA.score = _gameBoard.model.scoreA
+        _scoreB.score = _gameBoard.model.scoreB
+    }
+
+    function checkGameState()
+    {
+        if (_gameBoard.model.isEndGame) {
+            _gameBoard.visible = false
+            _endGameText.text = "Game over"
+            _endGameText.visible = true
+            _restartButton.visible = true
         }
     }
 
@@ -33,15 +51,8 @@ Item {
             }
         }
 
-        _scoreA.score = _gameBoard.model.scoreA
-        _scoreB.score = _gameBoard.model.scoreB
-
-        if (_gameBoard.model.isEndGame) {
-            _gameBoard.visible = false
-            _endGameText.text = "Game over"
-            _endGameText.visible = true
-            _restartButton.visible = true
-        }
+        root.updateScores()
+        root.checkGameState()
     }
 
     GridView {
@@ -64,7 +75,7 @@ Item {
                 displayText: value
                 anchors.fill: _backgroundDelegate
                 anchors.margins: 4
-                color: isActive ? "ivory" : "beige"
+                color: isActive ? "ivory" : "silver"
 
                 // TODO: animate it
                 visible: !isRemoved
@@ -88,13 +99,16 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
-    Button {
+
+    MenuButton {
         id: _restartButton
-        text: "Restart"
+        displayText: "Restart"
         visible: false
         anchors.margins: 10
         anchors.top: _endGameText.bottom
         anchors.horizontalCenter: parent.horizontalCenter
+        height: parent.height / 6
+        width: height * 4
         onClicked: {
             _gameBoard.visible = true
             _gameBoard.model.boardInit(5)
@@ -105,13 +119,14 @@ Item {
         }
     }
 
-    Button {
+    MenuButton {
         id: _backButton
-        text: "Menu"
-        visible: true
-        anchors.margins: 30
+        displayText: "Menu"
+        anchors.margins: 80
         anchors.top: _gameBoard.bottom
         anchors.horizontalCenter: parent.horizontalCenter
+        height: parent.height / 6
+        width: height * 4
         onClicked: {
             _gameBoard.model.boardInit(5)
             _scoreA.score = 0

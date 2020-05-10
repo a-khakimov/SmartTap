@@ -6,5 +6,7 @@
         <file>src/qml/MenuButton.qml</file>
         <file>src/qml/Score.qml</file>
         <file>src/qml/Tile.qml</file>
+        <file>src/qml/ThemeButton.qml</file>
+        <file>fonts/kongtext.ttf</file>
     </qresource>
 </RCC>

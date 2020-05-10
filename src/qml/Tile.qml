@@ -2,22 +2,27 @@ import QtQuick 2.0
 
 Rectangle {
     id: root
-    //color: "gainsboro"
-    color: "whitesmoke"
+    color: "white"
     property string displayText: ""
 
     Text {
         id: _text
         anchors.centerIn: root
+
         text: qsTr(displayText)
-        font.pointSize: root.width / 3
-        font.bold: true
-        color: "darkslategray"
+        color: "black"
+
+        FontLoader { id: _font; source: "qrc:/fonts/kongtext.ttf" }
+
+        font.family: _font.name
+        font.pointSize: root.width / 1.8
+        //font.bold: true
+
     }
 
     border {
-        width: 2
+        width: root.width / 12
     }
 
-    radius: 10
+    radius: 5
 }

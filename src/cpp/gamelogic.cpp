@@ -21,7 +21,8 @@ void GameLogic::reload(const int dimension)
   auto seed = std::chrono::system_clock::now().time_since_epoch().count();
   std::default_random_engine random(seed);
   for (auto& tile : m_board) {
-    tile.value = (random() % 19) - 9; /* from -9 to 9 range */
+    //tile.value = (random() % 19) - 9; /* from -9 to 9 range */
+    tile.value = (random() % 9);
     tile.active = false;
     tile.removed = false;
   }
