@@ -1,10 +1,10 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
-        <file>GameBoard.qml</file>
-        <file>Tile.qml</file>
-        <file>Score.qml</file>
-        <file>GameMenu.qml</file>
-        <file>MenuButton.qml</file>
+        <file>src/qml/GameBoard.qml</file>
+        <file>src/qml/GameMenu.qml</file>
+        <file>src/qml/main.qml</file>
+        <file>src/qml/MenuButton.qml</file>
+        <file>src/qml/Score.qml</file>
+        <file>src/qml/Tile.qml</file>
     </qresource>
 </RCC>

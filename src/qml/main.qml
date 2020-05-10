@@ -4,7 +4,7 @@ import GameBoardModel 1.0;
 
 Window {
     visible: true
-    width: 400
+    width: 1000
     height: 600
     minimumWidth: 400
     minimumHeight: 600
@@ -18,7 +18,7 @@ Window {
             visible: false
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
-            width: parent.width
+            width: parent.width / 4
             height: width
             onBack: {
                 _gameBoard.visible = false

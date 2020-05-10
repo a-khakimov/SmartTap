@@ -2,7 +2,7 @@ import QtQuick 2.0
 
 Rectangle {
     id: root
-    color: "cadetblue"
+    color: "white"
     property string displayText: ""
     anchors.margins: 10
 

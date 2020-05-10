@@ -9,9 +9,9 @@ int main(int argc, char *argv[])
   QGuiApplication app(argc, argv);
 
   QQmlApplicationEngine engine;
-  engine.addImportPath(":/");
+  engine.addImportPath(":/src/qml");
   GameBoardModel::declareQML();
-  const QUrl url(QStringLiteral("qrc:/main.qml"));
+  const QUrl url(QStringLiteral("qrc:/src/qml/main.qml"));
   QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
     &app, [url](QObject *obj, const QUrl &objUrl) {
       if (!obj && url == objUrl)
