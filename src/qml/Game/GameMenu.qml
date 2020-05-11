@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import GameBoardModel 1.0;
+import Base 1.0
 
 Item {
     id: root
@@ -12,7 +13,7 @@ Item {
 
     MenuButton {
         id: _startX1Button
-        displayText:  "Start x1"
+        displayText: "Start x1"
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: _startX2Button.top
         height: parent.height / 8

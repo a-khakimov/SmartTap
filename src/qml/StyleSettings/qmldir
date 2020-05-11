@@ -1,0 +1,3 @@
+module StyleSettings
+singleton Style 1.0 Style.qml
+singleton GlobalFont 1.0 GlobalFont.qml

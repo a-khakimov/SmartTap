@@ -1,0 +1,3 @@
+module Game
+GameBoard 1.0 GameBoard.qml
+GameMenu 1.0 GameMenu.qml

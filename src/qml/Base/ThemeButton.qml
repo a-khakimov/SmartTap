@@ -1,9 +1,15 @@
 import QtQuick 2.0
+import StyleSettings 1.0
 
 Rectangle {
     id: root
-    color: "white"
+    color: Style.themeButtonRectColor
     anchors.margins: root.height / 10
+    radius: 5
+    border {
+        width: root.width / 15
+        color: Style.themeButtonBorderColor
+    }
 
     signal dark()
     signal light()
@@ -14,13 +20,14 @@ Rectangle {
         text: "⬓"
         font.pointSize: root.width / 2
         font.bold: false
-        color: "#555555"
+        color: Style.themeButtonFontColor
     }
 
     MouseArea {
         anchors.fill: parent
-        onPressed: root.border.color = "darkslategrey"
-        onReleased: root.border.color = "#555555"
+        onPressed: {
+            root.border.color = Style.themeButtonPressedBorderColor
+        }
         onClicked: {
             if (_text.text == "⬓") {
                 root.dark()
@@ -29,13 +36,7 @@ Rectangle {
                 root.light()
                 _text.text = "⬓"
             }
+            root.border.color = Style.themeButtonBorderColor
         }
     }
-
-    border {
-        width: root.width / 15
-        color: "#555555"
-    }
-
-    radius: 5
 }

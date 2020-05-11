@@ -1,6 +1,9 @@
 import QtQuick 2.14
 import QtQuick.Window 2.14
-import GameBoardModel 1.0;
+import GameBoardModel 1.0
+import StyleSettings 1.0
+import Game 1.0
+import Base 1.0
 
 Window {
     visible: true
@@ -12,6 +15,7 @@ Window {
 
     Rectangle {
         anchors.fill: parent
+        color: Style.backgroundColor
 
         ThemeButton {
             id: _themeButton
@@ -19,6 +23,8 @@ Window {
             y : parent.height / 16
             height: parent.height / 10
             width: height
+            onDark: Style.isDarkTheme = true
+            onLight: Style.isDarkTheme = false
         }
 
         GameBoard {

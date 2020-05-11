@@ -1,6 +1,8 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.5
-import GameBoardModel 1.0;
+import GameBoardModel 1.0
+import StyleSettings 1.0
+import Base 1.0
 
 Item {
     id: root
@@ -50,7 +52,6 @@ Item {
                 }
             }
         }
-
         root.updateScores()
         root.checkGameState()
     }
@@ -70,21 +71,19 @@ Item {
             id: _backgroundDelegate
             width: _gameBoard.cellWidth
             height: _gameBoard.cellHeight
+            onStateChanged: {
+                console.log("Delegate item state changed")
+            }
 
             Tile {
                 displayText: value
                 anchors.fill: _backgroundDelegate
                 anchors.margins: 4
-                color: isActive ? "ivory" : "silver"
-
-                // TODO: animate it
-                visible: !isRemoved
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        move(index);
-                    }
+                color: isActive ? Style.tileRectActiveColor : Style.tileRectColor
+                visible: !isRemoved // TODO: animate it
+                onClicked: {
+                    console.log("Delegate item clicked:", index)
+                    move(index)
                 }
             }
         }
@@ -93,12 +92,17 @@ Item {
     Text {
         id: _endGameText
         visible: false
-        font.bold: true
-        font.pointSize: 20
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
+        color: Style.endGameTextColor
+        font {
+            family: GlobalFont.name
+            bold: true
+            pointSize: 20
+        }
+        anchors {
+            verticalCenter: parent.verticalCenter
+            horizontalCenter: parent.horizontalCenter
+        }
     }
-
 
     MenuButton {
         id: _restartButton
@@ -141,7 +145,7 @@ Item {
         anchors.bottom: _gameBoard.top
         anchors.left: _gameBoard.left
         anchors.margins: 20
-        font.pointSize: _gameBoard.width / 20
+        font.pointSize: _gameBoard.width / 15
     }
 
     Score {
@@ -150,6 +154,6 @@ Item {
         anchors.bottom: _gameBoard.top
         anchors.right: _gameBoard.right
         anchors.margins: 20
-        font.pointSize: _gameBoard.width / 20
+        font.pointSize: _gameBoard.width / 15
     }
 }

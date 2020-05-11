@@ -1,0 +1,5 @@
+module Base
+ThemeButton 1.0 ThemeButton.qml
+MenuButton 1.0 MenuButton.qml
+Score 1.0 Score.qml
+Tile 1.0 Tile.qml

@@ -1,12 +1,17 @@
 <RCC>
     <qresource prefix="/">
-        <file>src/qml/GameBoard.qml</file>
-        <file>src/qml/GameMenu.qml</file>
         <file>src/qml/main.qml</file>
-        <file>src/qml/MenuButton.qml</file>
-        <file>src/qml/Score.qml</file>
-        <file>src/qml/Tile.qml</file>
-        <file>src/qml/ThemeButton.qml</file>
         <file>fonts/kongtext.ttf</file>
+        <file>src/qml/Base/MenuButton.qml</file>
+        <file>src/qml/Base/qmldir</file>
+        <file>src/qml/Base/Score.qml</file>
+        <file>src/qml/Base/ThemeButton.qml</file>
+        <file>src/qml/Base/Tile.qml</file>
+        <file>src/qml/Game/GameBoard.qml</file>
+        <file>src/qml/Game/GameMenu.qml</file>
+        <file>src/qml/Game/qmldir</file>
+        <file>src/qml/StyleSettings/qmldir</file>
+        <file>src/qml/StyleSettings/Style.qml</file>
+        <file>src/qml/StyleSettings/GlobalFont.qml</file>
     </qresource>
 </RCC>

@@ -22,7 +22,7 @@ SOURCES += \
 RESOURCES += qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =
+QML_IMPORT_PATH += src/qml/StyleSettings
 
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH =
@@ -37,3 +37,17 @@ HEADERS += \
     src/cpp/gameboardmodel.h \
     src/cpp/gamelogic.h \
     src/cpp/tile.h
+
+DISTFILES += \
+    src/qml/Base/MenuButton.qml \
+    src/qml/Base/Score.qml \
+    src/qml/Base/ThemeButton.qml \
+    src/qml/Base/Tile.qml \
+    src/qml/Base/qmldir \
+    src/qml/Game/GameBoard.qml \
+    src/qml/Game/GameMenu.qml \
+    src/qml/Game/qmldir \
+    src/qml/StyleSettings/GlobalFont.qml \
+    src/qml/StyleSettings/Style.qml \
+    src/qml/StyleSettings/qmldir \
+    src/qml/main.qml
