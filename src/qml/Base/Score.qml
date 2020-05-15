@@ -6,5 +6,7 @@ Text {
     text: score
     font.family: GlobalFont.name
     font.bold: true
+    anchors.bottom: parent.top
+    anchors.margins: 20
     color: Style.scoreColor
 }

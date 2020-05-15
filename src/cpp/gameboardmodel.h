@@ -36,19 +36,20 @@ public:
   GameBoardModel(const BoardDimension boardDimension = defaultBoardDimension,
     QObject* parent = nullptr);
 
-  QHash<int, QByteArray> roleNames  () const override;
-  int                    rowCount   (const QModelIndex &parent = QModelIndex()) const override;
-  QVariant               data       (const QModelIndex& index, int role = Qt::DisplayRole) const override;
+  QHash<int, QByteArray> roleNames     () const override;
+  int                    rowCount      (const QModelIndex &parent = QModelIndex()) const override;
+  QVariant               data          (const QModelIndex& index, int role = Qt::DisplayRole) const override;
 
-  Q_INVOKABLE void       boardInit  (BoardDimension);
-  Q_INVOKABLE bool       moveX2     (int index);
-  Q_INVOKABLE bool       moveAI     ();
-  size_t                 dimension  () const;
-  size_t                 boardSize  () const;
-  int                    scoreA     () const;
-  int                    scoreB     () const;
-  bool                   isEndGame  () const;
-  static void            declareQML ();
+  Q_INVOKABLE bool       isTileRemoved (int index);
+  Q_INVOKABLE void       boardInit     (BoardDimension);
+  Q_INVOKABLE bool       moveX2        (int index);
+  Q_INVOKABLE int        moveAI        ();
+  size_t                 dimension     () const;
+  size_t                 boardSize     () const;
+  int                    scoreA        () const;
+  int                    scoreB        () const;
+  bool                   isEndGame     () const;
+  static void            declareQML    ();
 
 private:
 
@@ -59,6 +60,10 @@ private:
   };
 
   GameLogic gameLogic;
+
+signals:
+  void aiMoveIndex(qint32 aiindex) const;
+  void resetBoard() const;
 };
 
 #endif // GameBoardModel_H

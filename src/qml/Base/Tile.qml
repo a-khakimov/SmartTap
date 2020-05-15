@@ -13,16 +13,6 @@ Rectangle {
     signal clicked()
     property string displayText: ""
 
-    function setState(s)
-    {
-        console.log("tile:", s)
-        if (s === "active") {
-            root.state = "active"
-        } else {
-            root.state = "inactive"
-        }
-    }
-
     Text {
         id: _text
         anchors.centerIn: root
@@ -38,28 +28,4 @@ Rectangle {
             root.clicked()
         }
     }
-
-    states: [
-        State {
-            name: "inactive"
-            PropertyChanges {
-                target: root
-                color: Style.tileRectColor
-            }
-        },
-        State {
-            name: "active"
-            PropertyChanges {
-                target: root
-                color: Style.tileRectActiveColor
-            }
-        },
-        State {
-            name: "removed"
-            PropertyChanges {
-                target: root
-                // TODO
-            }
-        }
-    ]
 }

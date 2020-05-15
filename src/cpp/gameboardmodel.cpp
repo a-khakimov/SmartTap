@@ -15,11 +15,11 @@ void GameBoardModel::boardInit(const GameBoardModel::BoardDimension dimension)
   gameLogic.reload(dimension);
   size_t boardSize = gameLogic.getBoardSize();
   std::cout << boardSize << std::endl;
+  emit resetBoard();
   emit dataChanged(createIndex(0, 0), createIndex(gameLogic.getBoardSize(), 0));
 }
 
 void GameBoardModel::declareQML()
-
 {
   qmlRegisterType<GameBoardModel>("GameBoardModel", 1, 0, "GameBoardModel");
 }
@@ -67,18 +67,29 @@ QVariant GameBoardModel::data(const QModelIndex &index, int role) const
   }
 }
 
-bool GameBoardModel::moveAI()
+bool GameBoardModel::isTileRemoved(int index)
+{
+  const auto& tile = gameLogic.getBoard().at(index);
+  return tile.removed;
+}
+
+int GameBoardModel::moveAI()
 {
   smarttap::Ai ai;
   const int ai_move_index = ai.move(gameLogic.getBoard());
-  if (not gameLogic.move(ai_move_index)) { return false;  }
+  if (not gameLogic.move(ai_move_index)) {
+    return -1;
+  }
   emit dataChanged(createIndex(0, 0), createIndex(gameLogic.getBoardSize(), 0));
-  return true;
+  emit aiMoveIndex(ai_move_index);
+  return ai_move_index;
 }
 
 bool GameBoardModel::moveX2(int index)
 {
-  if (not gameLogic.move(index)) { return false; }
+  if (not gameLogic.move(index)) {
+    return false;
+  }
   emit dataChanged(createIndex(0, 0), createIndex(gameLogic.getBoardSize(), 0));
   return true;
 }
@@ -107,4 +118,3 @@ bool GameBoardModel::isEndGame() const
 {
   return gameLogic.isGameEnd();
 }
-

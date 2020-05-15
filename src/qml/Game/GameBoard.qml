@@ -9,20 +9,8 @@ Item {
     property int gameMode: GameBoardModel.X2
     property bool _aiCompleteMove: true
     property alias gameBoard: _gameBoard
+    property int curTileIndex: 0
     signal back()
-
-    Timer {
-        id: _aiMoveTimer
-        interval: 1000;
-        running: false;
-        repeat: false
-        onTriggered: {
-            _gameBoard.model.moveAI()
-            _aiCompleteMove = true
-            root.updateScores()
-            root.checkGameState()
-        }
-    }
 
     function updateScores()
     {
@@ -40,50 +28,99 @@ Item {
         }
     }
 
-    function move(index)
-    {
-        if (gameMode == GameBoardModel.X2) {
-            _gameBoard.model.moveX2(index)
-        } else if (gameMode == GameBoardModel.Ai) {
-            if (_aiCompleteMove) {
-                if(_gameBoard.model.moveX2(index)) {
-                    _aiMoveTimer.start()
-                    _aiCompleteMove = false
-                }
-            }
-        }
-        root.updateScores()
-        root.checkGameState()
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     GridView {
         id: _gameBoard
+        anchors.fill: parent
+        cellWidth: root.width / _gameBoard.model.dimension
+        cellHeight: root.height / _gameBoard.model.dimension
+        focus: true
 
         model: GameBoardModel {
             id: _gameBoardModel
         }
 
-        anchors.fill: parent
-        cellWidth: root.width / _gameBoard.model.dimension
-        cellHeight: root.height / _gameBoard.model.dimension
+        Timer {
+            id: _aiMoveTimer
+            interval: 1000;
+            running: false;
+            repeat: false
+            onTriggered: {
+                _gameBoard.model.moveAI()
+                _aiCompleteMove = true
+                root.updateScores()
+                root.checkGameState()
+            }
+        }
 
         delegate: Item {
             id: _backgroundDelegate
             width: _gameBoard.cellWidth
             height: _gameBoard.cellHeight
-            onStateChanged: {
-                console.log("Delegate item state changed")
+            SequentialAnimation on y {
+                id: _yAnim
+                running: false
+                NumberAnimation { from: y; to: root.height * 3; duration: 1000; easing.type: Easing.InCubic }
+                NumberAnimation { from: root.height * 3; to: y; duration: 1000; easing.type: Easing.InCubic }
+            }
+            SequentialAnimation on rotation {
+                id: _rotAnim
+                running: false
+                NumberAnimation { from: rotation; to: 360 * getRandomInt(-1, 1); duration: 1500; easing.type: Easing.InCubic }
             }
 
             Tile {
+                id: _tile
                 displayText: value
                 anchors.fill: _backgroundDelegate
                 anchors.margins: 4
                 color: isActive ? Style.tileRectActiveColor : Style.tileRectColor
-                visible: !isRemoved // TODO: animate it
+
+                SequentialAnimation on visible {
+                    id: _visibleAnim
+                    running: false
+                    NumberAnimation { from: 1; to: 0; duration: 1500; easing.type: Easing.InCubic }
+                }
+
                 onClicked: {
-                    console.log("Delegate item clicked:", index)
-                    move(index)
+                    if (gameMode == GameBoardModel.X2) {
+                        if(_gameBoard.model.moveX2(index)) {
+                            _visibleAnim.running = true
+                            _rotAnim.running = true
+                            _yAnim.running = true
+                        }
+                    } else if (gameMode == GameBoardModel.Ai) {
+                        if (_aiCompleteMove == true) {
+                            if(_gameBoard.model.moveX2(index)) {
+                                _aiMoveTimer.start()
+                                _aiCompleteMove = false
+                                _visibleAnim.running = true
+                                _rotAnim.running = true
+                                _yAnim.running = true
+                            }
+                        }
+                    }
+                    root.updateScores()
+                    root.checkGameState()
+                }
+
+                Connections {
+                    target: _gameBoardModel
+                    onAiMoveIndex: {
+                        if (index == aiindex) {
+                            _visibleAnim.running = true
+                            _rotAnim.running = true
+                            _yAnim.running = true
+                        }
+                    }
+                    onResetBoard: {
+                        _tile.visible = true
+                    }
                 }
             }
         }
@@ -142,18 +179,14 @@ Item {
     Score {
         id: _scoreA
         score: _gameBoard.model.scoreA
-        anchors.bottom: _gameBoard.top
         anchors.left: _gameBoard.left
-        anchors.margins: 20
         font.pointSize: _gameBoard.width / 15
     }
 
     Score {
         id: _scoreB
         score: _gameBoard.model.scoreB
-        anchors.bottom: _gameBoard.top
         anchors.right: _gameBoard.right
-        anchors.margins: 20
         font.pointSize: _gameBoard.width / 15
     }
 }
