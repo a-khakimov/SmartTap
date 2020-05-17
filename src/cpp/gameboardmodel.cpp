@@ -75,8 +75,9 @@ bool GameBoardModel::isTileRemoved(int index)
 
 int GameBoardModel::moveAI()
 {
-  smarttap::Ai ai;
-  const int ai_move_index = ai.move(gameLogic.getBoard());
+  smarttap::Ai ai(gameLogic.getBoard(), dimension(), scoreA(), scoreB());
+  const int ai_move_index = ai.move();
+  std::cout << "ai_move_index:" << ai_move_index << std::endl;
   if (not gameLogic.move(ai_move_index)) {
     return -1;
   }

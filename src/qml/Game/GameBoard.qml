@@ -71,7 +71,7 @@ Item {
             SequentialAnimation on rotation {
                 id: _rotAnim
                 running: false
-                NumberAnimation { from: rotation; to: 360 * getRandomInt(-1, 1); duration: 1500; easing.type: Easing.InCubic }
+                NumberAnimation { from: rotation; to: 360 * getRandomInt(-1, 1); duration: 1000; easing.type: Easing.InCubic }
             }
 
             Tile {

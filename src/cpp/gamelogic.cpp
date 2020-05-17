@@ -119,7 +119,6 @@ bool GameLogic::move(const int index)
 
 GameLogic::Position GameLogic::getRowCol(size_t index) const
 {
-  //Q_ASSERT(m_dimension > 0);
   const size_t row = index / m_dimension;
   const size_t column = index % m_dimension;
   return { row, column };
