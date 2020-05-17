@@ -6,10 +6,12 @@ QtObject {
 
     readonly property color backgroundColor: isDarkTheme ? "#323232" : "#FFFFFF"
     readonly property color scoreColor: isDarkTheme ? "gainsboro" : "darkslategray"
+    readonly property color scoreAnimColor: isDarkTheme ? "palegoldenrod" : "seagreen"
     readonly property color endGameTextColor: isDarkTheme ? "#EEEEEE" : "#555555"
 
     readonly property color tileRectColor: isDarkTheme ? "#888888" : "#AAAAAA"
     readonly property color tileRectActiveColor: isDarkTheme ? "#444444" : "#EEEEEE"
+    readonly property color tileFontAnimColor: isDarkTheme ? "lightgrey" : "dimgray"
     readonly property color tileFontColor: isDarkTheme ? "#EEEEEE" : "#555555"
     readonly property color tileBorderColor: isDarkTheme ? "#AAAAAA" : "#555555"
 

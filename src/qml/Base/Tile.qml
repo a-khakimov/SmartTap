@@ -20,12 +20,20 @@ Rectangle {
         color: Style.tileFontColor
         font.family: GlobalFont.name
         font.pointSize: root.width / 1.8
+
+        ColorAnimation on color {
+            id: _tileColorAnim
+            running: false
+            from: Style.tileFontAnimColor
+            to: Style.tileFontColor
+            duration: 700
+        }
     }
 
     MouseArea {
         anchors.fill: parent
-        onClicked: {
-            root.clicked()
-        }
+        hoverEnabled: true
+        onClicked: root.clicked()
+        onEntered: _tileColorAnim.running = true
     }
 }

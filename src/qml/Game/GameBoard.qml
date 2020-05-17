@@ -14,8 +14,10 @@ Item {
 
     function updateScores()
     {
-        _scoreA.score = _gameBoard.model.scoreA
-        _scoreB.score = _gameBoard.model.scoreB
+        if (_scoreA.score != _gameBoard.model.scoreA)
+            _scoreA.setScore(_gameBoard.model.scoreA)
+        if (_scoreB.score != _gameBoard.model.scoreB)
+            _scoreB.setScore(_gameBoard.model.scoreB)
     }
 
     function checkGameState()
@@ -157,6 +159,7 @@ Item {
             _endGameText.visible = false
             _scoreA.score = 0
             _scoreB.score = 0
+            _scoreA.setScore()
         }
     }
 
