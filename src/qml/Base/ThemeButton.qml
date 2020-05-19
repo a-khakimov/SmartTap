@@ -23,11 +23,19 @@ Rectangle {
         color: Style.themeButtonFontColor
     }
 
+    ColorAnimation on color {
+        id: _colorAnim
+        running: false
+        from: Style.tileFontAnimColor
+        to: Style.themeButtonRectColor
+        duration: 200
+    }
+
     MouseArea {
         anchors.fill: parent
-        onPressed: {
-            root.border.color = Style.themeButtonPressedBorderColor
-        }
+        hoverEnabled: true
+        onPressed: root.border.color = Style.themeButtonPressedBorderColor
+        onEntered: _colorAnim.running = true
         onClicked: {
             if (_text.text == "⬓") {
                 root.dark()

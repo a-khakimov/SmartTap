@@ -18,10 +18,8 @@ Text {
         duration: 1000
     }
 
-    function setScore(newScore)
-    {
+    function setScore(newScore) {
         score = newScore
         _colorAnim.running = true
     }
-
 }

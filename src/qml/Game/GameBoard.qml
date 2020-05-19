@@ -12,21 +12,25 @@ Item {
     property int curTileIndex: 0
     signal back()
 
-    function updateScores()
-    {
+    function reset() {
+        _endGameText.visible = false
+        _restartButton.visible = false
+        _gameBoard.visible = true
+    }
+
+    function updateScores() {
         if (_scoreA.score != _gameBoard.model.scoreA)
             _scoreA.setScore(_gameBoard.model.scoreA)
         if (_scoreB.score != _gameBoard.model.scoreB)
             _scoreB.setScore(_gameBoard.model.scoreB)
     }
 
-    function checkGameState()
-    {
+    function checkGameState() {
         if (_gameBoard.model.isEndGame) {
-            _gameBoard.visible = false
+            _endGameTextAnim.running = true
+            _restartButtonAnim.running = true
+            _gameBoardAnim.running = true
             _endGameText.text = "Game over"
-            _endGameText.visible = true
-            _restartButton.visible = true
         }
     }
 
@@ -41,10 +45,17 @@ Item {
         anchors.fill: parent
         cellWidth: root.width / _gameBoard.model.dimension
         cellHeight: root.height / _gameBoard.model.dimension
-        focus: true
 
         model: GameBoardModel {
             id: _gameBoardModel
+        }
+
+        NumberAnimation on visible {
+            id: _gameBoardAnim
+            running: false
+            from: 1; to: 0
+            duration: 1000;
+            easing.type: Easing.InCubic
         }
 
         Timer {
@@ -70,10 +81,13 @@ Item {
                 NumberAnimation { from: y; to: root.height * 3; duration: 1000; easing.type: Easing.InCubic }
                 NumberAnimation { from: root.height * 3; to: y; duration: 1000; easing.type: Easing.InCubic }
             }
-            SequentialAnimation on rotation {
+            NumberAnimation on rotation {
                 id: _rotAnim
                 running: false
-                NumberAnimation { from: rotation; to: 360 * getRandomInt(-1, 1); duration: 1000; easing.type: Easing.InCubic }
+                from: rotation
+                to: 360 * getRandomInt(-1, 1)
+                duration: 1000
+                easing.type: Easing.InCubic
             }
 
             Tile {
@@ -83,45 +97,43 @@ Item {
                 anchors.margins: 4
                 color: isActive ? Style.tileRectActiveColor : Style.tileRectColor
 
-                SequentialAnimation on visible {
+                NumberAnimation on visible {
                     id: _visibleAnim
                     running: false
-                    NumberAnimation { from: 1; to: 0; duration: 1500; easing.type: Easing.InCubic }
+                    from: 1; to: 0;
+                    duration: 1500;
+                    easing.type: Easing.InCubic
                 }
 
                 onClicked: {
-                    if (gameMode == GameBoardModel.X2) {
-                        if(_gameBoard.model.moveX2(index)) {
-                            _visibleAnim.running = true
-                            _rotAnim.running = true
-                            _yAnim.running = true
-                        }
+                    function start_animation() {
+                        _visibleAnim.running = true
+                        _rotAnim.running = true
+                        _yAnim.running = true
+                    }
+                    if (gameMode == GameBoardModel.X2 && _gameBoard.model.moveX2(index)) {
+                        start_animation()
+                        root.updateScores()
+                        root.checkGameState()
                     } else if (gameMode == GameBoardModel.Ai) {
-                        if (_aiCompleteMove == true) {
-                            if(_gameBoard.model.moveX2(index)) {
-                                _aiMoveTimer.start()
-                                _aiCompleteMove = false
-                                _visibleAnim.running = true
-                                _rotAnim.running = true
-                                _yAnim.running = true
-                            }
+                        if (_aiCompleteMove == true && _gameBoard.model.moveX2(index)) {
+                            _aiMoveTimer.start()
+                            _aiCompleteMove = false
+                            start_animation()
+                            root.updateScores()
                         }
                     }
-                    root.updateScores()
-                    root.checkGameState()
                 }
 
                 Connections {
                     target: _gameBoardModel
+                    onResetBoard: _tile.visible = true
                     onAiMoveIndex: {
                         if (index == aiindex) {
                             _visibleAnim.running = true
                             _rotAnim.running = true
                             _yAnim.running = true
                         }
-                    }
-                    onResetBoard: {
-                        _tile.visible = true
                     }
                 }
             }
@@ -141,6 +153,17 @@ Item {
             verticalCenter: parent.verticalCenter
             horizontalCenter: parent.horizontalCenter
         }
+        ParallelAnimation {
+            id: _endGameTextAnim
+            running: false
+            NumberAnimation {
+                target: _endGameText
+                property: "visible"
+                from: 0; to: 1
+                duration: 1000
+                easing.type: Easing.InCubic
+            }
+        }
     }
 
     MenuButton {
@@ -157,9 +180,15 @@ Item {
             _gameBoard.model.boardInit(5)
             _restartButton.visible = false
             _endGameText.visible = false
-            _scoreA.score = 0
-            _scoreB.score = 0
-            _scoreA.setScore()
+            _scoreA.setScore(0)
+            _scoreB.setScore(0)
+        }
+        NumberAnimation on visible {
+            id: _restartButtonAnim
+            running: false
+            from: 0; to: 1;
+            duration: 1000;
+            easing.type: Easing.InCubic
         }
     }
 
@@ -176,6 +205,7 @@ Item {
             _scoreA.score = 0
             _scoreB.score = 0
             root.back()
+            reset()
         }
     }
 
