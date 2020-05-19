@@ -22,7 +22,7 @@ void GameLogic::reload(const int dimension)
   std::default_random_engine random(seed);
   for (auto& tile : m_board) {
     //tile.value = (random() % 19) - 9; /* from -9 to 9 range */
-    tile.value = (random() % 9);
+    tile.value = (random() % 10);
     tile.active = false;
     tile.removed = false;
   }
