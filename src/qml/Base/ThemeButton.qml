@@ -17,8 +17,9 @@ Rectangle {
     Text {
         id: _text
         anchors.centerIn: root
-        text: "⬓"
-        font.pointSize: root.width / 2
+        text: "D"
+        font.family: GlobalFont.name
+        font.pointSize: root.width / 3
         font.bold: false
         color: Style.themeButtonFontColor
     }
@@ -37,12 +38,12 @@ Rectangle {
         onPressed: root.border.color = Style.themeButtonPressedBorderColor
         onEntered: _colorAnim.running = true
         onClicked: {
-            if (_text.text == "⬓") {
+            if (_text.text == "D") {
                 root.dark()
-                _text.text = "⬒"
+                _text.text = "L"
             } else {
                 root.light()
-                _text.text = "⬓"
+                _text.text = "D"
             }
             root.border.color = Style.themeButtonBorderColor
         }

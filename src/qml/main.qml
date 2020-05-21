@@ -1,16 +1,16 @@
-import QtQuick 2.14
-import QtQuick.Window 2.14
+import QtQuick.Window 2.12
+import QtQuick 2.12
+import QtQuick.Controls 2.5
 import GameBoardModel 1.0
 import StyleSettings 1.0
 import Game 1.0
 import Base 1.0
 
-Window {
+ApplicationWindow {
     visible: true
     width: 1000
     height: 600
-    minimumWidth: 400
-    minimumHeight: 600
+    visibility: "FullScreen"
     title: qsTr("SmartTap")
 
     Rectangle {
@@ -21,7 +21,7 @@ Window {
             id: _themeButton
             anchors.horizontalCenter: parent.horizontalCenter
             y : parent.height / 16
-            height: parent.height / 10
+            height: parent.height / 13
             width: height
             onDark: Style.isDarkTheme = true
             onLight: Style.isDarkTheme = false
@@ -32,7 +32,7 @@ Window {
             visible: false
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
-            width: parent.width / 4
+            width: (parent.width > parent.height ? (parent.width / 4) : parent.width)
             height: width
             onBack: {
                 _gameBoard.visible = false

@@ -173,7 +173,7 @@ Item {
         anchors.margins: 10
         anchors.top: _endGameText.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        height: parent.height / 6
+        height: parent.height / 8
         width: height * 4
         onClicked: {
             _gameBoard.visible = true
@@ -195,10 +195,10 @@ Item {
     MenuButton {
         id: _backButton
         displayText: "Menu"
-        anchors.margins: 80
-        anchors.top: _gameBoard.bottom
+        anchors.margins: 50
+        anchors.top: root.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        height: parent.height / 6
+        height: parent.height / 8
         width: height * 4
         onClicked: {
             _gameBoard.model.boardInit(5)
