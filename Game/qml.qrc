@@ -13,5 +13,10 @@
         <file>src/qml/StyleSettings/qmldir</file>
         <file>src/qml/StyleSettings/Style.qml</file>
         <file>src/qml/StyleSettings/GlobalFont.qml</file>
+        <file>sounds/touchsound.wav</file>
+        <file>sounds/background.mp3</file>
+        <file>src/qml/Sounds/qmldir</file>
+        <file>src/qml/Sounds/SoundManager.qml</file>
+        <file>src/qml/Sounds/SoundButton.qml</file>
     </qresource>
 </RCC>

@@ -1,0 +1,3 @@
+module Sounds
+singleton SoundManager 1.0 SoundManager.qml
+SoundButton 1.0 SoundButton.qml

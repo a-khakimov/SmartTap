@@ -1,8 +1,10 @@
 import QtQuick.Window 2.12
 import QtQuick 2.12
+import QtMultimedia 5.12
 import QtQuick.Controls 2.5
 import GameBoardModel 1.0
 import StyleSettings 1.0
+import Sounds 1.0
 import Game 1.0
 import Base 1.0
 
@@ -10,21 +12,39 @@ ApplicationWindow {
     visible: true
     width: 1000
     height: 600
-    visibility: "FullScreen"
+    //visibility: "FullScreen"
     title: qsTr("SmartTap")
 
     Rectangle {
         anchors.fill: parent
         color: Style.backgroundColor
 
-        ThemeButton {
-            id: _themeButton
+        Item {
+            id: _optButtons
             anchors.horizontalCenter: parent.horizontalCenter
             y : parent.height / 16
             height: parent.height / 13
-            width: height
-            onDark: Style.isDarkTheme = true
-            onLight: Style.isDarkTheme = false
+            width: height * 3
+            /*
+            ThemeButton {
+                id: _themeButton
+                height: parent.height
+                width: height
+                anchors.left: parent.left
+                anchors.top: parent.top
+                onDark: Style.isDarkTheme = true
+                onLight: Style.isDarkTheme = false
+            }
+            */
+
+            SoundButton {
+                id: _soundButton
+                anchors.top: parent.top
+                //anchors.right: parent.right
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: height
+                height: parent.height
+            }
         }
 
         GameBoard {

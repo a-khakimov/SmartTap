@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 2.5
 import GameBoardModel 1.0
 import StyleSettings 1.0
+import Sounds 1.0
 import Base 1.0
 
 Item {
@@ -68,6 +69,7 @@ Item {
                 _aiCompleteMove = true
                 root.updateScores()
                 root.checkGameState()
+                SoundManager.touchSound()
             }
         }
 

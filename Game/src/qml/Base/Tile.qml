@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import StyleSettings 1.0
+import Sounds 1.0
 
 Rectangle {
     id: root
@@ -33,7 +34,10 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
-        onClicked: root.clicked()
+        onClicked: {
+            root.clicked()
+            SoundManager.touchSound()
+        }
         onEntered: _tileColorAnim.running = true
     }
 }
