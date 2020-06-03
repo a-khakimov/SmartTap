@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include "gameboardmodel.h"
+#include "statistics.h"
 
 int main(int argc, char *argv[])
 {
@@ -18,6 +19,8 @@ int main(int argc, char *argv[])
         QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
   engine.load(url);
+
+  Statistics statistics;
 
   return app.exec();
 }

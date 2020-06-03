@@ -5,11 +5,12 @@
 #include <QTcpSocket>
 #include <QThreadPool>
 
-class TcpClient : public QObject
+class Client : public QObject
 {
     Q_OBJECT
 public:
-    explicit TcpClient(QObject* parent = nullptr);
+    explicit Client(QObject* parent = nullptr);
+    virtual ~Client();
     void setSocket(qintptr handle);
 
 public slots:

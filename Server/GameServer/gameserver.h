@@ -10,6 +10,7 @@ class GameServer : public QTcpServer
     Q_OBJECT
 public:
     explicit GameServer(QObject* parent = nullptr);
+    virtual ~GameServer();
     void start();
 
 protected:

@@ -1,8 +1,13 @@
 #include "gameserver.h"
-#include "tcpclient.h"
+#include "client.h"
 #include <QDebug>
 
-GameServer::GameServer(QObject *parent)
+GameServer::GameServer(QObject *parent) : QTcpServer(parent)
+{
+
+}
+
+GameServer::~GameServer()
 {
 
 }
@@ -18,6 +23,6 @@ void GameServer::start()
 
 void GameServer::incomingConnection(qintptr handle)
 {
-    TcpClient* client = new TcpClient(this);
+    Client* client = new Client(this);
     client->setSocket(handle);
 }

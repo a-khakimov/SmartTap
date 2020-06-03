@@ -19,7 +19,9 @@ SOURCES += \
         src/cpp/ai.cpp \
         src/cpp/gameboardmodel.cpp \
         src/cpp/gamelogic.cpp \
-        src/cpp/main.cpp
+        src/cpp/main.cpp \
+        src/cpp/statistics.cpp \
+        src/cpp/tcpclient.cpp
 
 RESOURCES += qml.qrc
 
@@ -36,11 +38,15 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+INCLUDEPATH += ../Server/GameServer/common/
+
 HEADERS += \
     src/cpp/ai.h \
     src/cpp/gameboardmodel.h \
     src/cpp/gamelogic.h \
-    src/cpp/tile.h
+    src/cpp/statistics.h \
+    src/cpp/tile.h \
+    src/cpp/tcpclient.h
 
 DISTFILES += \
     src/qml/Base/MenuButton.qml \
