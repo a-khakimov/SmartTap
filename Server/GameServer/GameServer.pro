@@ -1,7 +1,7 @@
 QT -= gui
 QT += network
 
-CONFIG += c++17 console
+CONFIG += c++11 console
 CONFIG -= app_bundle
 
 
@@ -18,8 +18,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         client.cpp \
+        dbmanager.cpp \
         gameserver.cpp \
         main.cpp \
+        player-odb.cxx \
         servertask.cpp
 
 # Default rules for deployment.
@@ -27,10 +29,18 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+LIBS += -lodb -lodb-pgsql
+
 INCLUDEPATH += common/
 
 HEADERS += \
     data.h \
     client.h \
+    dbmanager.h \
     gameserver.h \
+    player-odb.hxx \
+    player.hxx \
     servertask.h
+
+DISTFILES += \
+    player-odb.ixx

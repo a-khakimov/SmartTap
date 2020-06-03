@@ -4,6 +4,7 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QAbstractSocket>
+#include "dbmanager.h"
 
 class GameServer : public QTcpServer
 {
@@ -15,6 +16,9 @@ public:
 
 protected:
     void incomingConnection(qintptr handle) override;
+
+private:
+    DbManager dbManager;
 };
 
 #endif // GAMESERVER_H
