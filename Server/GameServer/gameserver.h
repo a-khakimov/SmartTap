@@ -16,9 +16,6 @@ public:
 
 protected:
     void incomingConnection(qintptr handle) override;
-
-private:
-    DbManager dbManager;
 };
 
 #endif // GAMESERVER_H

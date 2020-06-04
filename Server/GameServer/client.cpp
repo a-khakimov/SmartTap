@@ -25,7 +25,7 @@ void Client::setSocket(qintptr handle)
 
 void Client::connected()
 {
-    qDebug() << "Client connected";
+    qDebug() << "Client connected" << socket->peerName();
 }
 
 void Client::disconnected()

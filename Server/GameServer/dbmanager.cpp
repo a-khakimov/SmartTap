@@ -1,28 +1,48 @@
 #include "dbmanager.h"
-
+#include <memory>
 #include "player-odb.hxx"
 #include "player.hxx"
 #include <odb/pgsql/database.hxx>
-#include <odb/database.hxx>
 #include <QDebug>
 
-DbManager::DbManager()
+DbManager::DbManager() : db {nullptr}
+{
+
+}
+
+bool DbManager::connect(const std::string &user, const std::string &password, const std::string &database, const std::string &host)
 {
     try {
-        std::auto_ptr<odb::database> db(new odb::pgsql::database("ainr", "pass", "huidb", "localhost"));
-
-        player p("1.1.1.0", "today", "linux");
-
-
-        odb::transaction t(db->begin());
-        db->persist(p);
-        t.commit();
+        if (db == nullptr) {
+            db = new odb::pgsql::database(user, password, database, host);
+        }
     } catch (const odb::exception& e) {
         qDebug() << e.what();
+        return false;
     }
+    return true;
+}
+
+bool DbManager::saveStatInfo(
+        const std::string& ip,
+        const std::string& date,
+        const std::string& platform)
+{
+    try {
+        player p(ip, date, platform);
+        odb::transaction transaction(db->begin());
+        db->persist(p);
+        transaction.commit();
+    }
+    catch (const odb::exception& e) {
+        qDebug() << e.what();
+        return false;
+    }
+    return true;
 }
 
 DbManager::~DbManager()
 {
-
+    delete db;
+    db = nullptr;
 }

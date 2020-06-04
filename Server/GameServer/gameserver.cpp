@@ -2,7 +2,9 @@
 #include "client.h"
 #include <QDebug>
 
-GameServer::GameServer(QObject *parent) : QTcpServer(parent)
+
+GameServer::GameServer(QObject *parent)
+    : QTcpServer(parent)
 {
 
 }

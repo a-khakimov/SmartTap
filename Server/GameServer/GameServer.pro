@@ -1,7 +1,7 @@
 QT -= gui
 QT += network
 
-CONFIG += c++11 console
+CONFIG += c++14 console
 CONFIG -= app_bundle
 
 
@@ -40,7 +40,8 @@ HEADERS += \
     gameserver.h \
     player-odb.hxx \
     player.hxx \
-    servertask.h
+    servertask.h \
+    singleton.h
 
 DISTFILES += \
     player-odb.ixx
