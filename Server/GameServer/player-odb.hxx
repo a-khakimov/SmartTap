@@ -24,7 +24,8 @@
 #include <odb/wrapper-traits.hxx>
 #include <odb/pointer-traits.hxx>
 #include <odb/container-traits.hxx>
-#include <odb/no-op-cache-traits.hxx>
+#include <odb/session.hxx>
+#include <odb/cache-traits.hxx>
 #include <odb/result.hxx>
 #include <odb/simple-object-result.hxx>
 #include <odb/view-image.hxx>
@@ -63,11 +64,15 @@ namespace odb
     id (const object_type&);
 
     typedef
-    no_op_pointer_cache_traits<pointer_type>
+    odb::pointer_cache_traits<
+      pointer_type,
+      odb::session >
     pointer_cache_traits;
 
     typedef
-    no_op_reference_cache_traits<object_type>
+    odb::reference_cache_traits<
+      object_type,
+      odb::session >
     reference_cache_traits;
 
     static void
@@ -141,9 +146,9 @@ namespace odb
     typedef
     pgsql::query_column<
       pgsql::value_traits<
-        ::std::string,
-        pgsql::id_string >::query_type,
-      pgsql::id_string >
+        long long unsigned int,
+        pgsql::id_bigint >::query_type,
+      pgsql::id_bigint >
     datetime_type_;
 
     static const datetime_type_ datetime;
@@ -215,8 +220,7 @@ namespace odb
 
       // datetime_
       //
-      details::buffer datetime_value;
-      std::size_t datetime_size;
+      long long datetime_value;
       bool datetime_null;
 
       // platform_

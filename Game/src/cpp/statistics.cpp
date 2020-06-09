@@ -12,9 +12,8 @@ Statistics::Statistics(QObject *parent)
 void Statistics::send()
 {
     tap::StatisticsData data;
-    data.platform = tap::_linux + 2;
+    data.platform = tap::_linux;
     client->sendToServer(&data, sizeof(data));
-    qDebug() << "Send statistic";
 }
 
 Statistics::~Statistics()

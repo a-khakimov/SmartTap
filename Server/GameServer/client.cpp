@@ -2,6 +2,7 @@
 #include "servertask.h"
 #include "data.h"
 #include <QDebug>
+#include <QHostAddress>
 
 Client::Client(QObject *parent) : QObject(parent)
 {
@@ -25,7 +26,7 @@ void Client::setSocket(qintptr handle)
 
 void Client::connected()
 {
-    qDebug() << "Client connected" << socket->peerName();
+    qDebug() << "Client connected";
 }
 
 void Client::disconnected()
@@ -43,7 +44,7 @@ void Client::readyRead()
     tap::StatisticsData data;
     memcpy(&data, buf.constData(), buf.size());
 
-    ServerTask* task = new ServerTask(data, this);
+    ServerTask* task = new ServerTask(socket->peerAddress(), data, this);
     task->setAutoDelete(true);
 
     connect(task, SIGNAL(result(int)), this, SLOT(taskResult(int)), Qt::QueuedConnection);

@@ -34,7 +34,7 @@ LIBS += -lodb -lodb-pgsql
 INCLUDEPATH += common/
 
 HEADERS += \
-    data.h \
+    common/data.h \
     client.h \
     dbmanager.h \
     gameserver.h \

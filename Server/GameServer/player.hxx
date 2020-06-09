@@ -13,17 +13,18 @@ class player
 {
 public:
     player (const std::string& ip,
-            const std::string& datetime,
+            const unsigned long long datetime,
             const std::string& platform)
         : ip_(ip), datetime_(datetime), platform_(platform)
     {
+
     }
 
     const std::string& ip () const {
         return ip_;
     }
 
-    const std::string& datetime () const {
+    const unsigned long long& datetime () const {
         return datetime_;
     }
 
@@ -38,7 +39,7 @@ private:
 #pragma db id auto
     unsigned long id_;
     std::string ip_;
-    std::string datetime_;
+    unsigned long long datetime_;
     std::string platform_;
 };
 

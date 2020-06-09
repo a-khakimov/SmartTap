@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <odb/database.hxx>
+#include <QDateTime>
 
 class DbManager
 {
@@ -12,7 +13,12 @@ public:
                  const std::string& password,
                  const std::string& database,
                  const std::string& host);
-    bool saveStatInfo(const std::string& ip, const std::string& date, const std::string& platform);
+
+    bool saveStatInfo(
+            const std::string& ip,
+            const unsigned long long dt,
+            const std::string& platform);
+
     virtual ~DbManager();
 
 private:

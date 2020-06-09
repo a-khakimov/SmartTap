@@ -50,7 +50,7 @@ namespace odb
   persist_statement_types[] =
   {
     pgsql::text_oid,
-    pgsql::text_oid,
+    pgsql::int8_oid,
     pgsql::text_oid
   };
 
@@ -64,7 +64,7 @@ namespace odb
   update_statement_types[] =
   {
     pgsql::text_oid,
-    pgsql::text_oid,
+    pgsql::int8_oid,
     pgsql::text_oid,
     pgsql::int8_oid
   };
@@ -146,11 +146,7 @@ namespace odb
 
     // datetime_
     //
-    if (t[2UL])
-    {
-      i.datetime_value.capacity (i.datetime_size);
-      grew = true;
-    }
+    t[2UL] = 0;
 
     // platform_
     //
@@ -195,10 +191,8 @@ namespace odb
 
     // datetime_
     //
-    b[n].type = pgsql::bind::text;
-    b[n].buffer = i.datetime_value.data ();
-    b[n].capacity = i.datetime_value.capacity ();
-    b[n].size = &i.datetime_size;
+    b[n].type = pgsql::bind::bigint;
+    b[n].buffer = &i.datetime_value;
     b[n].is_null = &i.datetime_null;
     n++;
 
@@ -258,22 +252,15 @@ namespace odb
     // datetime_
     //
     {
-      ::std::string const& v =
+      long long unsigned int const& v =
         o.datetime_;
 
       bool is_null (false);
-      std::size_t size (0);
-      std::size_t cap (i.datetime_value.capacity ());
       pgsql::value_traits<
-          ::std::string,
-          pgsql::id_string >::set_image (
-        i.datetime_value,
-        size,
-        is_null,
-        v);
+          long long unsigned int,
+          pgsql::id_bigint >::set_image (
+        i.datetime_value, is_null, v);
       i.datetime_null = is_null;
-      i.datetime_size = size;
-      grew = grew || (cap != i.datetime_value.capacity ());
     }
 
     // platform_
@@ -341,15 +328,14 @@ namespace odb
     // datetime_
     //
     {
-      ::std::string& v =
+      long long unsigned int& v =
         o.datetime_;
 
       pgsql::value_traits<
-          ::std::string,
-          pgsql::id_string >::set_value (
+          long long unsigned int,
+          pgsql::id_bigint >::set_value (
         v,
         i.datetime_value,
-        i.datetime_size,
         i.datetime_null);
     }
 

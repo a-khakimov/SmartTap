@@ -25,11 +25,11 @@ bool DbManager::connect(const std::string &user, const std::string &password, co
 
 bool DbManager::saveStatInfo(
         const std::string& ip,
-        const std::string& date,
+        const unsigned long long datetime,
         const std::string& platform)
 {
     try {
-        player p(ip, date, platform);
+        player p(ip, datetime, platform);
         odb::transaction transaction(db->begin());
         db->persist(p);
         transaction.commit();
