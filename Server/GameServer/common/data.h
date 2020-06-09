@@ -24,5 +24,4 @@ typedef struct {
 
 }
 
-
 #endif // DATA_H
