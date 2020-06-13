@@ -1,7 +1,6 @@
 FROM a12e/docker-qt:5.13-android_arm64_v8a
 
-RUN 
-git clone https://github.com/a-khakimov/SmartTap.git \
+RUN git clone https://github.com/a-khakimov/SmartTap.git \
 cd SmartTap/Game \
 mkdir build \
 cd build \
