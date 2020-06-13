@@ -4,7 +4,8 @@ RUN git clone https://github.com/a-khakimov/SmartTap.git \
     cd SmartTap/Game/ \
     mkdir build \
     cd build/   \
-    qmake -r .. ANDROID_EXTRA_LIBS+=$ANDROID_DEV/lib/libcrypto.so ANDROID_EXTRA_LIBS+=$ANDROID_DEV/lib/libssl.so \
+    qmake -r .. ANDROID_EXTRA_LIBS+=$ANDROID_DEV/lib/libcrypto.so \
+                ANDROID_EXTRA_LIBS+=$ANDROID_DEV/lib/libssl.so \
     make        \
     make install INSTALL_ROOT=../dist \
     cd ..       \
