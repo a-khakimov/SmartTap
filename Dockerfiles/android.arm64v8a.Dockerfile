@@ -8,4 +8,6 @@ qmake -r .. ANDROID_EXTRA_LIBS+=$ANDROID_DEV/lib/libcrypto.so ANDROID_EXTRA_LIBS
 make; \
 make install INSTALL_ROOT=../dist; \
 cd ..; \
-androiddeployqt --input build/android-libSmartTap.so-deployment-settings.json --output dist/ --aab --deployment bundled --gradle --release
+androiddeployqt --input build/android-libSmartTap.so-deployment-settings.json --output dist/ --aab --deployment bundled --gradle --release; \
+sudo apt install zipalign -y; \
+zipalign -f -v 4 dist/build/outputs/apk/release/dist-release-unsigned.apk smarttap.zipalign.apk
