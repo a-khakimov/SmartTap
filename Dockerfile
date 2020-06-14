@@ -8,4 +8,4 @@ qmake -r .. ANDROID_EXTRA_LIBS+=$ANDROID_DEV/lib/libcrypto.so ANDROID_EXTRA_LIBS
 make; \
 make install INSTALL_ROOT=../dist; \
 cd ..; \
-androiddeployqt --input build/android-libSmartTap.so-deployment-settings.json --output dist/ --android-platform android-21 --deployment bundled --gradle --release
+androiddeployqt --input build/android-libSmartTap.so-deployment-settings.json --output dist/ --android-platform 21 --deployment bundled --gradle --release
