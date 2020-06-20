@@ -11,5 +11,5 @@ RUN git clone https://github.com/a-khakimov/SmartTap.git; \
     cd ..; \
     androiddeployqt --input build/android-libSmartTap.so-deployment-settings.json \
                     --output dist/ --aab --deployment bundled --gradle --release; \
-    cp android/AndroidManifest.arm64v8a.xml dist/; \
+    cp android/AndroidManifest.arm64v8a.xml dist/AndroidManifest.xml; \
     ./dist/gradlew build
