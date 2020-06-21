@@ -49,6 +49,13 @@ HEADERS += \
     src/cpp/tcpclient.h
 
 DISTFILES += \
+    android/AndroidManifest.xml \
+    android/build.gradle \
+    android/gradle/wrapper/gradle-wrapper.jar \
+    android/gradle/wrapper/gradle-wrapper.properties \
+    android/gradlew \
+    android/gradlew.bat \
+    android/res/values/libs.xml \
     src/qml/Base/MenuButton.qml \
     src/qml/Base/Score.qml \
     src/qml/Base/ThemeButton.qml \
@@ -61,3 +68,6 @@ DISTFILES += \
     src/qml/StyleSettings/Style.qml \
     src/qml/StyleSettings/qmldir \
     src/qml/main.qml
+android: include(/home/ainr/Android/Sdk/android_openssl/openssl.pri)
+
+ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
