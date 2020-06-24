@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS "player" CASCADE;
 
 CREATE TABLE "player" (
   "id" BIGSERIAL NOT NULL PRIMARY KEY,
+  "timestamp" TIMESTAMP NULL,
   "ip" TEXT NOT NULL,
-  "datetime" BIGINT NOT NULL,
   "platform" TEXT NOT NULL);
 

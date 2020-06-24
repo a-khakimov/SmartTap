@@ -25,7 +25,7 @@ bool DbManager::connect(const std::string &user, const std::string &password, co
 
 bool DbManager::saveStatInfo(
         const std::string& ip,
-        const unsigned long long datetime,
+        const QDateTime datetime,
         const std::string& platform)
 {
     try {

@@ -38,7 +38,7 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-INCLUDEPATH += ../Server/GameServer/common/
+INCLUDEPATH += ../Server/server4stat/common/
 
 HEADERS += \
     src/cpp/ai.h \

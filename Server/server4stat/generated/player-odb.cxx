@@ -49,8 +49,8 @@ namespace odb
   const unsigned int access::object_traits_impl< ::player, id_pgsql >::
   persist_statement_types[] =
   {
+    pgsql::timestamp_oid,
     pgsql::text_oid,
-    pgsql::int8_oid,
     pgsql::text_oid
   };
 
@@ -63,8 +63,8 @@ namespace odb
   const unsigned int access::object_traits_impl< ::player, id_pgsql >::
   update_statement_types[] =
   {
+    pgsql::timestamp_oid,
     pgsql::text_oid,
-    pgsql::int8_oid,
     pgsql::text_oid,
     pgsql::int8_oid
   };
@@ -136,17 +136,17 @@ namespace odb
     //
     t[0UL] = 0;
 
+    // timestamp_
+    //
+    t[1UL] = 0;
+
     // ip_
     //
-    if (t[1UL])
+    if (t[2UL])
     {
       i.ip_value.capacity (i.ip_size);
       grew = true;
     }
-
-    // datetime_
-    //
-    t[2UL] = 0;
 
     // platform_
     //
@@ -180,6 +180,13 @@ namespace odb
       n++;
     }
 
+    // timestamp_
+    //
+    b[n].type = pgsql::bind::timestamp;
+    b[n].buffer = &i.timestamp_value;
+    b[n].is_null = &i.timestamp_null;
+    n++;
+
     // ip_
     //
     b[n].type = pgsql::bind::text;
@@ -187,13 +194,6 @@ namespace odb
     b[n].capacity = i.ip_value.capacity ();
     b[n].size = &i.ip_size;
     b[n].is_null = &i.ip_null;
-    n++;
-
-    // datetime_
-    //
-    b[n].type = pgsql::bind::bigint;
-    b[n].buffer = &i.datetime_value;
-    b[n].is_null = &i.datetime_null;
     n++;
 
     // platform_
@@ -228,6 +228,20 @@ namespace odb
 
     bool grew (false);
 
+    // timestamp_
+    //
+    {
+      ::QDateTime const& v =
+        o.timestamp_;
+
+      bool is_null (true);
+      pgsql::value_traits<
+          ::QDateTime,
+          pgsql::id_timestamp >::set_image (
+        i.timestamp_value, is_null, v);
+      i.timestamp_null = is_null;
+    }
+
     // ip_
     //
     {
@@ -247,20 +261,6 @@ namespace odb
       i.ip_null = is_null;
       i.ip_size = size;
       grew = grew || (cap != i.ip_value.capacity ());
-    }
-
-    // datetime_
-    //
-    {
-      long long unsigned int const& v =
-        o.datetime_;
-
-      bool is_null (false);
-      pgsql::value_traits<
-          long long unsigned int,
-          pgsql::id_bigint >::set_image (
-        i.datetime_value, is_null, v);
-      i.datetime_null = is_null;
     }
 
     // platform_
@@ -310,6 +310,20 @@ namespace odb
         i.id_null);
     }
 
+    // timestamp_
+    //
+    {
+      ::QDateTime& v =
+        o.timestamp_;
+
+      pgsql::value_traits<
+          ::QDateTime,
+          pgsql::id_timestamp >::set_value (
+        v,
+        i.timestamp_value,
+        i.timestamp_null);
+    }
+
     // ip_
     //
     {
@@ -323,20 +337,6 @@ namespace odb
         i.ip_value,
         i.ip_size,
         i.ip_null);
-    }
-
-    // datetime_
-    //
-    {
-      long long unsigned int& v =
-        o.datetime_;
-
-      pgsql::value_traits<
-          long long unsigned int,
-          pgsql::id_bigint >::set_value (
-        v,
-        i.datetime_value,
-        i.datetime_null);
     }
 
     // platform_
@@ -371,8 +371,8 @@ namespace odb
   const char access::object_traits_impl< ::player, id_pgsql >::persist_statement[] =
   "INSERT INTO \"player\" "
   "(\"id\", "
+  "\"timestamp\", "
   "\"ip\", "
-  "\"datetime\", "
   "\"platform\") "
   "VALUES "
   "(DEFAULT, $1, $2, $3) "
@@ -381,8 +381,8 @@ namespace odb
   const char access::object_traits_impl< ::player, id_pgsql >::find_statement[] =
   "SELECT "
   "\"player\".\"id\", "
+  "\"player\".\"timestamp\", "
   "\"player\".\"ip\", "
-  "\"player\".\"datetime\", "
   "\"player\".\"platform\" "
   "FROM \"player\" "
   "WHERE \"player\".\"id\"=$1";
@@ -390,8 +390,8 @@ namespace odb
   const char access::object_traits_impl< ::player, id_pgsql >::update_statement[] =
   "UPDATE \"player\" "
   "SET "
-  "\"ip\"=$1, "
-  "\"datetime\"=$2, "
+  "\"timestamp\"=$1, "
+  "\"ip\"=$2, "
   "\"platform\"=$3 "
   "WHERE \"id\"=$4";
 
@@ -402,8 +402,8 @@ namespace odb
   const char access::object_traits_impl< ::player, id_pgsql >::query_statement[] =
   "SELECT "
   "\"player\".\"id\", "
+  "\"player\".\"timestamp\", "
   "\"player\".\"ip\", "
-  "\"player\".\"datetime\", "
   "\"player\".\"platform\" "
   "FROM \"player\"";
 

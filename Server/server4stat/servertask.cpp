@@ -44,13 +44,12 @@ void ServerTask::run()
         default:
             break;
         }
-        qDebug() << "Client: " << m_clientAddr.toString() <<  " platform:" << platform;
 
         DbManager* dbManager = Singleton<DbManager>::Instance();
+        qDebug() << "Client: " << m_clientAddr.toString() <<  " Platform:" << platform;
         dbManager->saveStatInfo(
                     m_clientAddr.toString().toStdString(),
-                    QDateTime::currentDateTime().toSecsSinceEpoch(),
-                    platform.toStdString());
+                    QDateTime::currentDateTime(), platform.toStdString());
         emit result(0);
     }
 }

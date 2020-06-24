@@ -16,7 +16,7 @@ public:
 
     bool saveStatInfo(
             const std::string& ip,
-            const unsigned long long dt,
+            const QDateTime dt,
             const std::string& platform);
 
     virtual ~DbManager();

@@ -5,6 +5,18 @@
 #ifndef PLAYER_ODB_HXX
 #define PLAYER_ODB_HXX
 
+// Begin prologue.
+//
+#include <odb/qt/version.hxx>
+#if ODB_QT_VERSION != 2040000 // 2.4.0
+#  error ODB and C++ compilers see different libodb-qt interface versions
+#endif
+#include <odb/qt/date-time/pgsql/qdate-traits.hxx>
+#include <odb/qt/date-time/pgsql/qtime-traits.hxx>
+#include <odb/qt/date-time/pgsql/qdate-time-traits.hxx>
+//
+// End prologue.
+
 #include <odb/version.hxx>
 
 #if (ODB_VERSION != 20400UL)
@@ -17,6 +29,7 @@
 
 #include <memory>
 #include <cstddef>
+#include <utility>
 
 #include <odb/core.hxx>
 #include <odb/traits.hxx>
@@ -24,8 +37,7 @@
 #include <odb/wrapper-traits.hxx>
 #include <odb/pointer-traits.hxx>
 #include <odb/container-traits.hxx>
-#include <odb/session.hxx>
-#include <odb/cache-traits.hxx>
+#include <odb/no-op-cache-traits.hxx>
 #include <odb/result.hxx>
 #include <odb/simple-object-result.hxx>
 #include <odb/view-image.hxx>
@@ -64,15 +76,11 @@ namespace odb
     id (const object_type&);
 
     typedef
-    odb::pointer_cache_traits<
-      pointer_type,
-      odb::session >
+    no_op_pointer_cache_traits<pointer_type>
     pointer_cache_traits;
 
     typedef
-    odb::reference_cache_traits<
-      object_type,
-      odb::session >
+    no_op_reference_cache_traits<object_type>
     reference_cache_traits;
 
     static void
@@ -129,6 +137,18 @@ namespace odb
 
     static const id_type_ id;
 
+    // timestamp
+    //
+    typedef
+    pgsql::query_column<
+      pgsql::value_traits<
+        ::QDateTime,
+        pgsql::id_timestamp >::query_type,
+      pgsql::id_timestamp >
+    timestamp_type_;
+
+    static const timestamp_type_ timestamp;
+
     // ip
     //
     typedef
@@ -140,18 +160,6 @@ namespace odb
     ip_type_;
 
     static const ip_type_ ip;
-
-    // datetime
-    //
-    typedef
-    pgsql::query_column<
-      pgsql::value_traits<
-        long long unsigned int,
-        pgsql::id_bigint >::query_type,
-      pgsql::id_bigint >
-    datetime_type_;
-
-    static const datetime_type_ datetime;
 
     // platform
     //
@@ -172,14 +180,14 @@ namespace odb
   id (A::table_name, "\"id\"", 0);
 
   template <typename A>
+  const typename query_columns< ::player, id_pgsql, A >::timestamp_type_
+  query_columns< ::player, id_pgsql, A >::
+  timestamp (A::table_name, "\"timestamp\"", 0);
+
+  template <typename A>
   const typename query_columns< ::player, id_pgsql, A >::ip_type_
   query_columns< ::player, id_pgsql, A >::
   ip (A::table_name, "\"ip\"", 0);
-
-  template <typename A>
-  const typename query_columns< ::player, id_pgsql, A >::datetime_type_
-  query_columns< ::player, id_pgsql, A >::
-  datetime (A::table_name, "\"datetime\"", 0);
 
   template <typename A>
   const typename query_columns< ::player, id_pgsql, A >::platform_type_
@@ -212,16 +220,16 @@ namespace odb
       long long id_value;
       bool id_null;
 
+      // timestamp_
+      //
+      long long timestamp_value;
+      bool timestamp_null;
+
       // ip_
       //
       details::buffer ip_value;
       std::size_t ip_size;
       bool ip_null;
-
-      // datetime_
-      //
-      long long datetime_value;
-      bool datetime_null;
 
       // platform_
       //

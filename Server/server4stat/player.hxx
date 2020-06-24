@@ -7,15 +7,16 @@
 #include <string>
 #include <cstddef>
 #include <odb/core.hxx>
+#include <QtCore/QDateTime>
 
 #pragma db object
 class player
 {
 public:
     player (const std::string& ip,
-            const unsigned long long datetime,
+            const QDateTime datetime,
             const std::string& platform)
-        : ip_(ip), datetime_(datetime), platform_(platform)
+        : ip_(ip), timestamp_(datetime), platform_(platform)
     {
 
     }
@@ -24,8 +25,8 @@ public:
         return ip_;
     }
 
-    const unsigned long long& datetime () const {
-        return datetime_;
+    QDateTime datetime () const {
+        return timestamp_;
     }
 
     const std::string& platform () const {
@@ -38,8 +39,8 @@ private:
 
 #pragma db id auto
     unsigned long id_;
+    QDateTime timestamp_;
     std::string ip_;
-    unsigned long long datetime_;
     std::string platform_;
 };
 
