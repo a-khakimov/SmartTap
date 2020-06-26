@@ -807,13 +807,13 @@ namespace odb
     return st.execute ();
   }
 
-  // person_stat
+  // player_stat
   //
 
-  const char access::view_traits_impl< ::person_stat, id_pgsql >::
-  query_statement_name[] = "query_person_stat";
+  const char access::view_traits_impl< ::player_stat, id_pgsql >::
+  query_statement_name[] = "query_player_stat";
 
-  bool access::view_traits_impl< ::person_stat, id_pgsql >::
+  bool access::view_traits_impl< ::player_stat, id_pgsql >::
   grow (image_type& i,
         bool* t)
   {
@@ -829,7 +829,7 @@ namespace odb
     return grew;
   }
 
-  void access::view_traits_impl< ::person_stat, id_pgsql >::
+  void access::view_traits_impl< ::player_stat, id_pgsql >::
   bind (pgsql::bind* b,
         image_type& i)
   {
@@ -848,7 +848,7 @@ namespace odb
     n++;
   }
 
-  void access::view_traits_impl< ::person_stat, id_pgsql >::
+  void access::view_traits_impl< ::player_stat, id_pgsql >::
   init (view_type& o,
         const image_type& i,
         database* db)
@@ -872,8 +872,8 @@ namespace odb
     }
   }
 
-  access::view_traits_impl< ::person_stat, id_pgsql >::query_base_type
-  access::view_traits_impl< ::person_stat, id_pgsql >::
+  access::view_traits_impl< ::player_stat, id_pgsql >::query_base_type
+  access::view_traits_impl< ::player_stat, id_pgsql >::
   query_statement (const query_base_type& q)
   {
     query_base_type r (
@@ -892,8 +892,8 @@ namespace odb
     return r;
   }
 
-  result< access::view_traits_impl< ::person_stat, id_pgsql >::view_type >
-  access::view_traits_impl< ::person_stat, id_pgsql >::
+  result< access::view_traits_impl< ::player_stat, id_pgsql >::view_type >
+  access::view_traits_impl< ::player_stat, id_pgsql >::
   query (database&, const query_base_type& q)
   {
     using namespace pgsql;

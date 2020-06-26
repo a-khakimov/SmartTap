@@ -4,6 +4,7 @@
 #include <memory>
 #include <odb/database.hxx>
 #include <QDateTime>
+#include "data.h"
 
 class DbManager
 {
@@ -18,6 +19,8 @@ public:
             const std::string& ip,
             const QDateTime dt,
             const std::string& platform);
+
+    QVector<tap::StatisticsData> getStatInfo();
 
     virtual ~DbManager();
 

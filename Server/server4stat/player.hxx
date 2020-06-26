@@ -5,7 +5,6 @@
 #define PLAYER_HXX
 
 #include <string>
-#include <cstddef>
 #include <odb/core.hxx>
 #include <QtCore/QDateTime>
 
@@ -13,7 +12,7 @@
 class player
 {
 public:
-    player (const std::string& ip,
+    player(const std::string& ip,
             const QDateTime datetime,
             const std::string& platform)
         : ip_(ip), timestamp_(datetime), platform_(platform)
@@ -21,15 +20,15 @@ public:
 
     }
 
-    const std::string& ip () const {
+    const std::string& ip() const {
         return ip_;
     }
 
-    QDateTime datetime () const {
+    QDateTime datetime() const {
         return timestamp_;
     }
 
-    const std::string& platform () const {
+    const std::string& platform() const {
         return platform_;
     }
 
@@ -45,7 +44,7 @@ private:
 };
 
 #pragma db view object(player)
-struct person_stat
+struct player_stat
 {
 #pragma db column("count(" + player::id_ + ")")
     std::size_t count;

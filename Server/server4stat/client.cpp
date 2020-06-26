@@ -36,25 +36,22 @@ void Client::disconnected()
 
 void Client::readyRead()
 {
-    if (socket->bytesAvailable() < (qint64)sizeof(tap::StatisticsData)) {
+    if (socket->bytesAvailable() < (qint64)sizeof(tap::RequestHeader)) {
         return;
     }
 
-    auto const buf = socket->read(sizeof(tap::StatisticsData));
-    tap::StatisticsData data;
+    auto const buf = socket->read(sizeof(tap::RequestHeader));
+    tap::RequestHeader data;
     memcpy(&data, buf.constData(), buf.size());
 
     ServerTask* task = new ServerTask(socket->peerAddress(), data, this);
     task->setAutoDelete(true);
 
-    connect(task, SIGNAL(result(int)), this, SLOT(taskResult(int)), Qt::QueuedConnection);
+    connect(task, SIGNAL(result(QByteArray)), this, SLOT(taskResult(QByteArray)), Qt::QueuedConnection);
     QThreadPool::globalInstance()->start(task);
 }
 
-void Client::taskResult(int number)
+void Client::taskResult(QByteArray data)
 {
-    QByteArray buf;
-    buf.append("Result: ");
-    buf.append(QString::number(number));
-    socket->write(buf);
+    socket->write(data);
 }

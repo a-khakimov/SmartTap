@@ -2,6 +2,7 @@
 #define DATA_H
 
 #include <stdint.h>
+#include <QString>
 
 namespace tap {
 
@@ -13,12 +14,21 @@ typedef enum {
     _webasm,
 } platform;
 
-const uint16_t StatisticsDataId = 0x7370;
+const uint16_t PlayerInfomationId = 0x7370;
+const uint16_t StatisticsDataId = 0x7371;
 
 #pragma pack(push, 1)
 typedef struct {
-    const uint16_t id = StatisticsDataId;
+    uint16_t id;
     uint8_t platform;
+} RequestHeader;
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+typedef struct {
+    qint64 timestamp;
+    QString platform;
+    QString ip;
 } StatisticsData;
 #pragma pack(pop)
 

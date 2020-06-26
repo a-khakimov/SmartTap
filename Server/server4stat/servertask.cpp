@@ -1,6 +1,7 @@
 #include "servertask.h"
 #include "dbmanager.h"
 #include "singleton.h"
+#include <QDataStream>
 #include <QDebug>
 
 ServerTask::ServerTask()
@@ -8,7 +9,7 @@ ServerTask::ServerTask()
 
 }
 
-ServerTask::ServerTask(const QHostAddress clientAddr, const tap::StatisticsData data, QObject *parent)
+ServerTask::ServerTask(const QHostAddress clientAddr, const tap::RequestHeader data, QObject *parent)
     : QObject {parent}, m_data {data}, m_clientAddr {clientAddr}
 {
 
@@ -19,11 +20,21 @@ ServerTask::~ServerTask()
 
 }
 
+#include <QDataStream>
+
+QDataStream& operator << (QDataStream &stream, const tap::StatisticsData &d)
+{
+    stream << static_cast<qint64>(d.timestamp)
+           << static_cast<QString>(d.platform)
+           << static_cast<QString>(d.ip);
+    return stream;
+}
+
+
 void ServerTask::run()
 {
-    if (m_data.id != tap::StatisticsDataId) {
-        emit result(1);
-    } else {
+    switch (m_data.id) {
+    case tap::PlayerInfomationId: {
         QString platform;
         switch (m_data.platform) {
         case tap::_ios:
@@ -46,10 +57,21 @@ void ServerTask::run()
         }
 
         DbManager* dbManager = Singleton<DbManager>::Instance();
-        qDebug() << "Client: " << m_clientAddr.toString() <<  " Platform:" << platform;
         dbManager->saveStatInfo(
                     m_clientAddr.toString().toStdString(),
                     QDateTime::currentDateTime(), platform.toStdString());
-        emit result(0);
+        break;
+    }
+    case tap::StatisticsDataId: {
+        DbManager* dbManager = Singleton<DbManager>::Instance();
+        QVector<tap::StatisticsData> data = dbManager->getStatInfo();
+        QByteArray bytes;
+        QDataStream stream(&bytes, QIODevice::WriteOnly);
+        stream << data;
+        emit result(bytes);
+        break;
+    }
+    default:
+        break;
     }
 }

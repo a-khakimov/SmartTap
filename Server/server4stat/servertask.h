@@ -11,17 +11,17 @@ class ServerTask : public QObject, public QRunnable
     Q_OBJECT
 public:
     ServerTask();
-    explicit ServerTask(const QHostAddress clientAddr, const tap::StatisticsData data, QObject* parent = nullptr);
+    explicit ServerTask(const QHostAddress clientAddr, const tap::RequestHeader data, QObject* parent = nullptr);
     virtual ~ServerTask();
 
 signals:
-    void result(int number);
+    void result(QByteArray);
 
 protected:
     void run() override;
 
 private:
-    tap::StatisticsData m_data;
+    tap::RequestHeader m_data;
     QHostAddress m_clientAddr;
 };
 

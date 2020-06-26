@@ -17,7 +17,7 @@ public slots:
     void connected();
     void disconnected();
     void readyRead();
-    void taskResult(int number);
+    void taskResult(QByteArray);
 
 private:
     QTcpSocket* socket;

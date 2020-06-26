@@ -90,20 +90,20 @@ namespace odb
     callback (database&, const object_type&, callback_event);
   };
 
-  // person_stat
+  // player_stat
   //
   template <>
-  struct class_traits< ::person_stat >
+  struct class_traits< ::player_stat >
   {
     static const class_kind kind = class_view;
   };
 
   template <>
-  class access::view_traits< ::person_stat >
+  class access::view_traits< ::player_stat >
   {
     public:
-    typedef ::person_stat view_type;
-    typedef ::person_stat* pointer_type;
+    typedef ::player_stat view_type;
+    typedef ::player_stat* pointer_type;
 
     static void
     callback (database&, view_type&, callback_event);
@@ -354,11 +354,11 @@ namespace odb
   {
   };
 
-  // person_stat
+  // player_stat
   //
   template <>
-  class access::view_traits_impl< ::person_stat, id_pgsql >:
-    public access::view_traits< ::person_stat >
+  class access::view_traits_impl< ::player_stat, id_pgsql >:
+    public access::view_traits< ::player_stat >
   {
     public:
     struct image_type
@@ -403,16 +403,16 @@ namespace odb
   };
 
   template <>
-  class access::view_traits_impl< ::person_stat, id_common >:
-    public access::view_traits_impl< ::person_stat, id_pgsql >
+  class access::view_traits_impl< ::player_stat, id_common >:
+    public access::view_traits_impl< ::player_stat, id_pgsql >
   {
   };
 
   // player
   //
-  // person_stat
+  // player_stat
   //
-  struct access::view_traits_impl< ::person_stat, id_pgsql >::query_columns:
+  struct access::view_traits_impl< ::player_stat, id_pgsql >::query_columns:
     odb::pointer_query_columns<
       ::player,
       id_pgsql,
