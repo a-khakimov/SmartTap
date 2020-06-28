@@ -19,6 +19,7 @@ public:
     Dimension3x3 = 3,
     Dimension4x4 = 4,
     Dimension5x5 = 5,
+    Dimension6x6 = 6,
     Dimension7x7 = 7,
     Dimension9x9 = 9,
     };
@@ -32,7 +33,7 @@ public:
   };
   Q_ENUMS(GameMode)
 
-  static constexpr BoardDimension defaultBoardDimension { Dimension5x5 };
+  static constexpr BoardDimension defaultBoardDimension { Dimension6x6 };
   GameBoardModel(const BoardDimension boardDimension = defaultBoardDimension,
     QObject* parent = nullptr);
 

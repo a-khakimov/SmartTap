@@ -55,19 +55,7 @@ DISTFILES += \
     android/gradle/wrapper/gradle-wrapper.properties \
     android/gradlew \
     android/gradlew.bat \
-    android/res/values/libs.xml \
-    src/qml/Base/MenuButton.qml \
-    src/qml/Base/Score.qml \
-    src/qml/Base/ThemeButton.qml \
-    src/qml/Base/Tile.qml \
-    src/qml/Base/qmldir \
-    src/qml/Game/GameBoard.qml \
-    src/qml/Game/GameMenu.qml \
-    src/qml/Game/qmldir \
-    src/qml/StyleSettings/GlobalFont.qml \
-    src/qml/StyleSettings/Style.qml \
-    src/qml/StyleSettings/qmldir \
-    src/qml/main.qml
+    android/res/values/libs.xml
 android: include(/home/ainr/Android/Sdk/android_openssl/openssl.pri)
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android

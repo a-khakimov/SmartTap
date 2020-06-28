@@ -39,11 +39,11 @@ ApplicationWindow {
 
             SoundButton {
                 id: _soundButton
-                anchors.top: parent.top
-                //anchors.right: parent.right
-                anchors.horizontalCenter: parent.horizontalCenter
-                width: height
                 height: parent.height
+                width: height
+                //anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.horizontalCenter: parent.horizontalCenter
             }
         }
 

@@ -1,24 +1,28 @@
 import QtQuick 2.0
 import StyleSettings 1.0
+import QtGraphicalEffects 1.15
 
 Rectangle {
     id: root
     color: Style.themeButtonRectColor
     anchors.margins: root.height / 10
-    radius: 5
+    radius: 10
     border {
-        width: root.width / 15
+        width: root.width / 13
         color: Style.themeButtonBorderColor
     }
 
-    Text {
-        id: _text
-        anchors.centerIn: root
-        text: "M"
-        font.family: GlobalFont.name
-        font.pointSize: root.width / 3
-        font.bold: false
-        color: Style.themeButtonFontColor
+    Image {
+        id: _image
+        anchors.fill: parent
+        anchors.margins: 10
+        source: "qrc:/imgs/soundon.png"
+    }
+
+    ColorOverlay {
+        anchors.fill: _image
+        source: _image
+        color: "#88888888"
     }
 
     MouseArea {
@@ -30,8 +34,10 @@ Rectangle {
         onClicked: {
             if (SoundManager.muted) {
                 SoundManager.unmute()
+                _image.source = "qrc:/imgs/soundon.png"
             } else {
                 SoundManager.mute()
+                _image.source = "qrc:/imgs/soundoff.png"
             }
             root.border.color = Style.themeButtonBorderColor
         }

@@ -11,7 +11,9 @@ Item {
     property bool _aiCompleteMove: true
     property alias gameBoard: _gameBoard
     property int curTileIndex: 0
+
     signal back()
+    signal endGame()
 
     function reset() {
         _endGameText.visible = false
@@ -28,8 +30,10 @@ Item {
 
     function checkGameState() {
         if (_gameBoard.model.isEndGame) {
+            endGame() // signal
             _endGameTextAnim.running = true
-            _restartButtonAnim.running = true
+            _restartButtonAnimVisible.running = true
+            _restartButtonYPosAnim.running = true
             _gameBoardAnim.running = true
             _endGameText.text = "Game over"
         }
@@ -66,10 +70,10 @@ Item {
             repeat: false
             onTriggered: {
                 _gameBoard.model.moveAI()
-                _aiCompleteMove = true
+                SoundManager.touchSound()
                 root.updateScores()
                 root.checkGameState()
-                SoundManager.touchSound()
+                _aiCompleteMove = true
             }
         }
 
@@ -77,17 +81,19 @@ Item {
             id: _backgroundDelegate
             width: _gameBoard.cellWidth
             height: _gameBoard.cellHeight
+
             SequentialAnimation on y {
                 id: _yAnim
                 running: false
                 NumberAnimation { from: y; to: root.height * 3; duration: 1000; easing.type: Easing.InCubic }
                 NumberAnimation { from: root.height * 3; to: y; duration: 1000; easing.type: Easing.InCubic }
             }
+
             NumberAnimation on rotation {
                 id: _rotAnim
                 running: false
                 from: rotation
-                to: 360 * getRandomInt(-1, 1)
+                to: 360 * (getRandomInt(0, 1) ? 1 : -1)
                 duration: 1000
                 easing.type: Easing.InCubic
             }
@@ -129,9 +135,21 @@ Item {
 
                 Connections {
                     target: _gameBoardModel
-                    onResetBoard: _tile.visible = true
-                    onAiMoveIndex: {
-                        if (index == aiindex) {
+                    function onResetBoard() {
+                        _tile.visible = true
+                    }
+                    function onAiMoveIndex(aiindex) {
+                        if (index === aiindex) {
+                            _visibleAnim.running = true
+                            _rotAnim.running = true
+                            _yAnim.running = true
+                        }
+                    }
+                }
+                Connections {
+                    target: root
+                    function onEndGame() {
+                        if (!_gameBoard.model.isTileRemoved(index)) {
                             _visibleAnim.running = true
                             _rotAnim.running = true
                             _yAnim.running = true
@@ -169,32 +187,6 @@ Item {
     }
 
     MenuButton {
-        id: _restartButton
-        displayText: "Restart"
-        visible: false
-        anchors.margins: 10
-        anchors.top: _endGameText.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
-        height: parent.height / 8
-        width: height * 4
-        onClicked: {
-            _gameBoard.visible = true
-            _gameBoard.model.boardInit(5)
-            _restartButton.visible = false
-            _endGameText.visible = false
-            _scoreA.setScore(0)
-            _scoreB.setScore(0)
-        }
-        NumberAnimation on visible {
-            id: _restartButtonAnim
-            running: false
-            from: 0; to: 1;
-            duration: 1000;
-            easing.type: Easing.InCubic
-        }
-    }
-
-    MenuButton {
         id: _backButton
         displayText: "Menu"
         anchors.margins: 50
@@ -203,11 +195,60 @@ Item {
         height: parent.height / 8
         width: height * 4
         onClicked: {
-            _gameBoard.model.boardInit(5)
-            _scoreA.score = 0
-            _scoreB.score = 0
+            _gameBoard.model.boardInit(6)
+            _scoreA.setScore(0)
+            _scoreB.setScore(0)
             root.back()
             reset()
+        }
+    }
+
+    MenuButton {
+        id: _restartButton
+        displayText: "Restart"
+        visible: false
+        anchors.horizontalCenter: parent.horizontalCenter
+        height: parent.height / 8
+        width: height * 4
+        y: _backButton.y
+        onClicked: {
+            _restartButtonY2PosAnim.running = true
+            _restartButtonAnimUnVisible.running = true
+            _gameBoard.model.boardInit(6)
+            _gameBoard.visible = true
+            _endGameText.visible = false
+            _scoreA.setScore(0)
+            _scoreB.setScore(0)
+        }
+        NumberAnimation on visible {
+            id: _restartButtonAnimVisible
+            running: false
+            from: 0; to: 1;
+            duration: 1200;
+            easing.type: Easing.InCubic
+        }
+        NumberAnimation on visible {
+            id: _restartButtonAnimUnVisible
+            running: false
+            from: 1; to: 0;
+            duration: 120;
+            easing.type: Easing.InCubic
+        }
+        NumberAnimation on y {
+            id: _restartButtonYPosAnim
+            from: _backButton.y;
+            to: _backButton.y - _backButton.height * 1.5;
+            running: false
+            duration: 1000;
+            easing.type: Easing.InCubic
+        }
+        NumberAnimation on y {
+            id: _restartButtonY2PosAnim
+            from: _backButton.y - _backButton.height * 1.5;
+            to: _backButton.y;
+            running: false
+            duration: 500;
+            easing.type: Easing.OutCubic
         }
     }
 

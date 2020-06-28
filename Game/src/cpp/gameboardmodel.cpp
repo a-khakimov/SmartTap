@@ -14,7 +14,7 @@ void GameBoardModel::boardInit(const GameBoardModel::BoardDimension dimension)
 {
   gameLogic.reload(dimension);
   size_t boardSize = gameLogic.getBoardSize();
-  std::cout << boardSize << std::endl;
+  std::cout << "boardSize: " << boardSize << std::endl;
   emit resetBoard();
   emit dataChanged(createIndex(0, 0), createIndex(gameLogic.getBoardSize(), 0));
 }
